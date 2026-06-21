@@ -1,0 +1,13 @@
+# Windows "mark of the web" metadata
+*.Zone.Identifier
+*:Zone.Identifier
+
+# Playwright MCP test artifacts
+.playwright-mcp/
+
+# Unused source screenshot (not referenced by the site)
+Screenshot 2026-06-04 142656.png
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db

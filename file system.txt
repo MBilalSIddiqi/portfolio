@@ -1,0 +1,21 @@
+text
+/portfolio_web3/
+│
+├── index.html
+├── projects.html
+├── certificates.html
+├── contact.html
+│
+├── css/
+│   └── style.css
+│
+├── js/
+│   └── script.js
+│
+├── assets/
+│   ├── images/
+│   └── pdfs/
+│
+├── spec.md          
+├── README.md        
+├── TODO.md 

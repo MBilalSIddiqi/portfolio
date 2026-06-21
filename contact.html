@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Mohammad Bilal Siddiqui</title>
+  <meta name="description" content="Get in touch with Mohammad Bilal Siddiqui to build a fast, affordable, modern website for your business." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Contact — Mohammad Bilal Siddiqui" />
+  <meta property="og:description" content="Let's talk about your website." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <h1 class="section__title">Let's <span class="accent">Talk</span></h1>
+        <p class="section__lead">I'm always looking for conversations with people building websites for people.</p>
+
+        <div class="contact__grid">
+          <!-- Left: form -->
+          <form id="contact-form" novalidate>
+            <div class="form-field">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" autocomplete="name" placeholder="Your name" />
+              <span class="form-error" data-error-for="name" role="alert"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" />
+              <span class="form-error" data-error-for="email" role="alert"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell me about your project..."></textarea>
+              <span class="form-error" data-error-for="message" role="alert"></span>
+            </div>
+
+            <button type="submit" class="btn btn--blue">Send Message</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <!-- Right: info table -->
+          <aside class="info-table" aria-label="Contact information">
+            <div class="info-row">
+              <div class="info-row__label"><i class="fas fa-envelope"></i> Email</div>
+              <div class="info-row__value">
+                <a href="mailto:bilalseo009@gmail.com">bilalseo009@gmail.com</a>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-row__label"><i class="fab fa-linkedin"></i> LinkedIn</div>
+              <div class="info-row__value">
+                <a href="https://www.linkedin.com/in/muhammad-bilal-siddiqui-11299229a/" target="_blank" rel="noopener">Muhammad Bilal</a>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-row__label"><i class="fab fa-github"></i> GitHub</div>
+              <div class="info-row__value">
+                <a href="https://github.com/MBilalSIddiqi" target="_blank" rel="noopener">MBilalSIddiqi</a>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-row__label"><i class="fas fa-location-dot"></i> Location</div>
+              <div class="info-row__value">Planet Earth</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 Mohammad Bilal Siddiqui ·
+        <a href="https://github.com/MBilalSIddiqi" target="_blank" rel="noopener">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
