@@ -11,3 +11,6 @@ Screenshot 2026-06-04 142656.png
 # OS / editor cruft
 .DS_Store
 Thumbs.db
+
+# Netlify
+.netlify/

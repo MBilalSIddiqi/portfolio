@@ -6,7 +6,8 @@ affordable, premium-looking websites.
 
 Built with **vanilla HTML5, CSS3, and JavaScript** — no frameworks, no build step, no dependencies.
 
-> 🔗 **Live site:** https://mbilalsiddiqi.github.io/portfolio/
+> 🔗 **Live site:** https://mbilalsiddiqi-portfolio.netlify.app/
+> (mirror: https://mbilalsiddiqi.github.io/portfolio/)
 
 ---
 

@@ -37,6 +37,7 @@
 ## 🚀 Phase 5: Deployment
 - [ ] Run Lighthouse audit (target 90+)
 - [ ] Cross-browser testing (Chrome, Firefox, Safari, Edge)
+- [x] Deploy to Netlify — live at https://mbilalsiddiqi-portfolio.netlify.app/
 - [x] Deploy to GitHub Pages — live at https://mbilalsiddiqi.github.io/portfolio/
 - [x] Update `README.md` with live link
 - [ ] Send portfolio to clients! 🎉
