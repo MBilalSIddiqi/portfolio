@@ -14,3 +14,7 @@ Thumbs.db
 
 # Netlify
 .netlify/
+
+# Local agent/skill tooling (not part of the site)
+.agents/
+skills-lock.json
