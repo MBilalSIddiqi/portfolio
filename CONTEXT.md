@@ -6,8 +6,13 @@ For the original requirements, see `PROMPT.md` and `spec.md`; for the roadmap, s
 
 > **Status:** Phases 1–3 complete (structure, styling, interactivity). Phase 4 partially done —
 > real project images wired in for 8 of 15 projects (`assets/images/`); the other 7 projects, all
-> certificates, and the profile photo still use picsum placeholders. Remaining: remaining real
-> assets and deployment/testing (Phase 5).
+> certificates, and the profile photo still use picsum placeholders. Phase 5 deployment **done** —
+> the site is **live** on Netlify (primary, with GitHub continuous deployment) and GitHub Pages
+> (mirror). Remaining: remaining real assets, Lighthouse/cross-browser testing, and a real form backend.
+
+> **Live URLs:**
+> - **Netlify (primary):** https://mbilalsiddiqi-portfolio.netlify.app/ — auto-deploys on every push to `main`.
+> - **GitHub Pages (mirror):** https://mbilalsiddiqi.github.io/portfolio/ — also rebuilds on push.
 
 ---
 
@@ -41,6 +46,9 @@ portflio_web3/
 │   └── script.js       # All global interactivity
 ├── assets/
 │   └── images/         # Real project mockups (11 files for 8 projects)
+├── netlify.toml        # Netlify config (static root publish, no build step)
+├── .gitignore          # Excludes junk, .netlify/, local agent tooling
+├── README.md           # Project readme (live links)
 ├── PROMPT.md           # Original build prompt
 ├── spec.md             # Detailed product spec
 ├── TODO.md             # Roadmap / checklist
@@ -48,9 +56,10 @@ portflio_web3/
 └── file system.txt     # Intended file tree reference
 ```
 
-> Note: `assets/images/` now exists with real project mockups. `assets/pdfs/` and `README.md` from
-> `file system.txt` are **not yet created**. Certificates, the profile photo, and 7 projects still
-> use picsum.photos placeholders.
+> Note: `assets/images/` exists with real project mockups; `README.md` and `netlify.toml` now exist.
+> `assets/pdfs/` from `file system.txt` is **not yet created**. Certificates, the profile photo, and
+> 7 projects still use picsum.photos placeholders. Untracked local tooling (`.agents/`,
+> `skills-lock.json`, `.netlify/`) is gitignored and not part of the site.
 
 ### `assets/images/` contents
 Real mockups for 8 of 15 projects (filenames match each project's `seed`):
@@ -206,13 +215,31 @@ python3 -m http.server 8000
 
 ---
 
-## 9. Not Yet Done (see `TODO.md`)
+## 9. Deployment
+
+The site is live on **two** hosts, both auto-updating from the GitHub repo
+`MBilalSIddiqi/portfolio` (`main` branch):
+
+- **Netlify (primary)** — https://mbilalsiddiqi-portfolio.netlify.app/
+  - Site name `mbilalsiddiqi-portfolio`, team "Muhammad Bilal's Inc" (`bilalseo009`, Free plan).
+  - **Continuous deployment** via the Netlify GitHub App: push to `main` → production deploy;
+    open a PR → unique deploy-preview URL; branch deploys at `<branch>--mbilalsiddiqi-portfolio.netlify.app`.
+  - Config in `netlify.toml`: `publish = "."`, no build command (static site).
+  - Admin: https://app.netlify.com/projects/mbilalsiddiqi-portfolio
+- **GitHub Pages (mirror)** — https://mbilalsiddiqi.github.io/portfolio/
+  - Served from `main` branch root; rebuilds automatically on push.
+
+A single `git push origin main` therefore updates both live sites.
+
+---
+
+## 10. Not Yet Done (see `TODO.md`)
 
 - **Remaining real assets:** profile photo, certificate screenshots, and real images for the 7
   unmatched projects (bauhaus, gaming, photography, retro, skincare, urban, wedding) — still
   picsum.photos placeholders. (8 projects already use real mockups in `assets/images/`.)
-- **Deployment:** Lighthouse audit (target 90+), cross-browser testing, deploy to
-  Netlify/Vercel/GitHub Pages.
-- **Repo files:** `README.md` is referenced in `file system.txt` but not yet created. `assets/images/`
-  now exists; `assets/pdfs/` does not.
-- **Backend form delivery:** the contact form is simulated only; no email/Formspree integration.
+- **Testing:** Lighthouse audit (target 90+) and cross-browser testing not yet run.
+  *(Deployment itself is done — see §9.)*
+- **Repo files:** `assets/pdfs/` from `file system.txt` does not exist yet.
+- **Backend form delivery:** the contact form is simulated only; no email/Formspree/Netlify Forms
+  integration yet.
