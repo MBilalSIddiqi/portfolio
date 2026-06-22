@@ -22,6 +22,7 @@
 - [x] Build project modal (click card → open summary + image)
 - [x] Build certificate modal (click card → open screenshot + summary)
 - [x] Add contact form validation (required fields, email format)
+- [x] Wire contact form to a real backend (Netlify Forms — AJAX submit, honeypot spam protection)
 - [x] Implement smooth scrolling
 
 ## 🧹 Phase 4: Polish & Content

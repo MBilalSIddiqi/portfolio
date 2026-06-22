@@ -8,7 +8,8 @@ For the original requirements, see `PROMPT.md` and `spec.md`; for the roadmap, s
 > real project images wired in for 8 of 15 projects (`assets/images/`); the other 7 projects, all
 > certificates, and the profile photo still use picsum placeholders. Phase 5 deployment **done** —
 > the site is **live** on Netlify (primary, with GitHub continuous deployment) and GitHub Pages
-> (mirror). Remaining: remaining real assets, Lighthouse/cross-browser testing, and a real form backend.
+> (mirror). The contact form is wired to **Netlify Forms** (real backend). Remaining: remaining real
+> assets and Lighthouse/cross-browser testing.
 
 > **Live URLs:**
 > - **Netlify (primary):** https://mbilalsiddiqi-portfolio.netlify.app/ — auto-deploys on every push to `main`.
@@ -161,7 +162,10 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
 - H1 "Let's **Talk**" + lead "I'm always looking for conversations with people building websites
   for people."
 - Two-column layout:
-  - **Left — contact form**: Name, Email, Message, Send button. Frontend-only (simulated submit).
+  - **Left — contact form**: Name, Email, Message, Send button. Wired to **Netlify Forms** —
+    `data-netlify="true"`, hidden `form-name`, and a `bot-field` honeypot. After inline validation
+    passes, JS AJAX-POSTs to Netlify (stays on-page) and shows the success/fallback message.
+    *(Submissions are captured only on the Netlify host, not the GitHub Pages mirror.)*
   - **Right — info table** (4 rows):
     1. **Email:** bilalseo009@gmail.com (mailto)
     2. **LinkedIn:** Muhammad Bilal → https://www.linkedin.com/in/muhammad-bilal-siddiqui-11299229a/ (new tab)
@@ -183,14 +187,16 @@ shared script is safe on every page.
 | `renderProjects()` | Build project cards from `PROJECTS`, wire modal on click; uses `images[]` (real) with picsum fallback, renders carousel when >1 image |
 | `buildCarousel()` / `wireCarousel()` | Build + wire the multi-image modal carousel (prev/next/dots, wrapping index) |
 | `renderCertificates()` | Build certificate cards from `CERTIFICATES`, wire modal on click |
-| `initContactForm()` | Validate Name/Email/Message (required + email regex), per-field errors, simulated success message |
+| `initContactForm()` | Validate Name/Email/Message (required + email regex), per-field errors; on success AJAX-POST to Netlify Forms with inline success/fallback message + disabled-while-sending button |
 
 - **Data arrays** `PROJECTS` (15) and `CERTIFICATES` (4) hold all card content — easy to edit/extend.
   Matched projects carry an optional `images: ["assets/images/..."]` array; unmatched ones omit it
   and fall back to `https://picsum.photos/seed/${seed}/800/600`.
-- **Form validation**: blocks submit on empty fields or invalid email (regex
-  `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`), shows inline `.form-error` messages + an `alert`, and on success
-  resets the form and shows a friendly confirmation (no backend).
+- **Form validation + submission**: blocks submit on empty fields or invalid email (regex
+  `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`), shows inline `.form-error` messages + an `alert`. On success it
+  AJAX-POSTs the form data to Netlify Forms (`fetch("/")`, url-encoded), resets the form, and shows
+  a friendly confirmation; on a failed POST (e.g. the GitHub Pages mirror, which has no backend) it
+  shows a fallback pointing to the email address. The Send button is disabled while sending.
 - **Smooth scrolling**: handled via CSS `scroll-behavior: smooth`.
 
 ---
@@ -241,5 +247,6 @@ A single `git push origin main` therefore updates both live sites.
 - **Testing:** Lighthouse audit (target 90+) and cross-browser testing not yet run.
   *(Deployment itself is done — see §9.)*
 - **Repo files:** `assets/pdfs/` from `file system.txt` does not exist yet.
-- **Backend form delivery:** the contact form is simulated only; no email/Formspree/Netlify Forms
-  integration yet.
+- **Email notifications for the form:** the contact form now posts to **Netlify Forms** (submissions
+  collect in the Netlify dashboard → Forms tab). Still to do: add an email notification under
+  Forms → Form notifications so submissions land in an inbox automatically.
