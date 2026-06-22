@@ -479,13 +479,37 @@
         return;
       }
 
-      // Frontend-only simulated submission
-      form.reset();
-      if (status) {
-        status.textContent =
-          "✅ Thanks, " + name.value.trim().split(" ")[0] +
-          "! Your message has been received. I'll reply within 24 hours.";
-      }
+      // Submit to Netlify Forms via AJAX (keeps the user on-page).
+      const firstName = name.value.trim().split(" ")[0];
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const body = new URLSearchParams(new FormData(form)).toString();
+
+      if (submitBtn) submitBtn.disabled = true;
+      if (status) status.textContent = "Sending…";
+
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Network response was not ok");
+          form.reset();
+          if (status) {
+            status.textContent =
+              "✅ Thanks, " + firstName +
+              "! Your message has been received. I'll reply within 24 hours.";
+          }
+        })
+        .catch(() => {
+          if (status) {
+            status.textContent =
+              "⚠️ Something went wrong sending your message. Please email me directly at bilalseo009@gmail.com.";
+          }
+        })
+        .finally(() => {
+          if (submitBtn) submitBtn.disabled = false;
+        });
     });
   }
 
