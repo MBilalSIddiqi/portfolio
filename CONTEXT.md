@@ -83,6 +83,8 @@ Real mockups for 8 of 15 projects (filenames match each project's `seed`):
 | `--text-soft` | `#e0e0e0` | Body text |
 | `--muted` | `#9aa3b2` | Low-emphasis text |
 | `--border` | `#232a36` | Hairline borders |
+| `--navy-deep` | `#0d1117` | Pricing section band |
+| `--green` | `#22c55e` | Pricing feature checkmarks, discount accents |
 
 Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow, transition.
 
@@ -134,6 +136,13 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
 - **Quote band** — full-width black section: *"I build websites that my clients don't need to be
   tech-savvy to manage."*
 - **Demo showcase** — 1 large card + 2 stacked smaller cards (CSS Grid), linking to projects.
+- **Pricing** — dark-navy band (`--navy-deep`) with three tiers (Starter, Popular, Business),
+  the middle one highlighted with a "Most Popular" badge. Each card lists features (green
+  checkmarks) and a CTA that links to `contact.html?plan=<Tier>`, which prefills the contact
+  message. An **early-bird 50% discount** shows the struck-through original price next to the
+  discounted amount and a "50% OFF" pill. A **USD/PKR currency toggle** (`#currency-toggle`)
+  switches every price between USD and a hardcoded PKR equivalent (~280 PKR/USD, stored in
+  `data-usd`/`data-pkr` attributes).
 - **Side Projects** — 6-card grid (1 col mobile → 2 tablet → 3 desktop), each with a Font Awesome
   icon, "Side Project 1–6". Centered rounded **GitHub CTA**: `<i class="fab fa-github"></i> Explore
   my other repos` → https://github.com/MBilalSIddiqi (new tab).
@@ -166,6 +175,8 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
     `data-netlify="true"`, hidden `form-name`, and a `bot-field` honeypot. After inline validation
     passes, JS AJAX-POSTs to Netlify (stays on-page) and shows the success/fallback message.
     *(Submissions are captured only on the Netlify host, not the GitHub Pages mirror.)*
+    If the page is opened with a `?plan=<Starter|Popular|Business>` query param (from a pricing
+    CTA), JS prefills the message textarea with an enquiry for that package.
   - **Right — info table** (4 rows):
     1. **Email:** bilalseo009@gmail.com (mailto)
     2. **LinkedIn:** Muhammad Bilal → https://www.linkedin.com/in/muhammad-bilal-siddiqui-11299229a/ (new tab)
@@ -187,7 +198,8 @@ shared script is safe on every page.
 | `renderProjects()` | Build project cards from `PROJECTS`, wire modal on click; uses `images[]` (real) with picsum fallback, renders carousel when >1 image |
 | `buildCarousel()` / `wireCarousel()` | Build + wire the multi-image modal carousel (prev/next/dots, wrapping index) |
 | `renderCertificates()` | Build certificate cards from `CERTIFICATES`, wire modal on click |
-| `initContactForm()` | Validate Name/Email/Message (required + email regex), per-field errors; on success AJAX-POST to Netlify Forms with inline success/fallback message + disabled-while-sending button |
+| `initContactForm()` | Validate Name/Email/Message (required + email regex), per-field errors; on success AJAX-POST to Netlify Forms with inline success/fallback message + disabled-while-sending button; prefills message from a `?plan=` query param |
+| `initPricingToggle()` | Toggle every `[data-usd][data-pkr]` price between USD and PKR; updates the active state + `aria-pressed` on `#currency-toggle` |
 
 - **Data arrays** `PROJECTS` (15) and `CERTIFICATES` (4) hold all card content — easy to edit/extend.
   Matched projects carry an optional `images: ["assets/images/..."]` array; unmatched ones omit it
