@@ -90,6 +90,37 @@ This website is aimed at two types of clients:
 - **Placeholder Text:** For now, use "Side Project 1", "Side Project 2", ... through "Side Project 6".
 - **CTA Button (centered below the grid):** A rounded square button with a small GitHub icon placed before the text. The text should read "Explore my other repos". The button must be centered on the page.
 
+#### 5.2.6 Pricing Section
+- **Heading:** "Transparent Pricing" (H2, centered, bold).
+- **Sub-heading:** "High-quality digital solutions tailored to your budget. No hidden fees." (centered, normal weight, muted/light color).
+- **Layout:** Three pricing cards displayed side-by-side in a row, centered on the page.
+- **Background:** Dark navy (e.g., `#0d1117` or `#0f172a`) to distinguish this section from the rest of the page.
+- **Card Styling:** Rounded corners, subtle border (e.g., `1px solid rgba(255,255,255,0.1)`), dark card background (slightly lighter than section background).
+
+**The three pricing tiers are:**
+
+| Tier | Price | Features | Button Label |
+|:---|:---|:---|:---|
+| STARTER | $40 | 2 Professional Pages, Mobile Responsive, Basic SEO Setup, 3-Day Delivery | "Choose Starter" |
+| POPULAR *(highlighted)* | $50 | 3 Professional Pages, Mobile Responsive, Advanced SEO Setup, Social Media Links, 3-Day Delivery | "Choose Popular" |
+| BUSINESS | $60 | 4+ Professional Pages, Mobile Responsive, E-commerce Ready, Custom Animations, Priority Support | "Choose Business" |
+
+**Visual Emphasis on the "Popular" card:**
+- The **POPULAR** card must be visually elevated above the other two (e.g., slightly taller, a glowing blue border, or a blue outline).
+- A **"MOST POPULAR"** badge/pill must appear above the Popular card, centered on its top edge, with a blue background and white text.
+- The "Choose Popular" button must be **fully filled blue** (e.g., `#2a6fdb`), while "Choose Starter" and "Choose Business" buttons use an **outlined style** (transparent background, blue/white border, white text).
+
+**Feature List Styling:**
+- Each feature within a card is preceded by a **green checkmark icon** (✓).
+- Features are listed vertically within each card.
+
+**Card Button Interaction:**
+- All three "Choose [Tier]" buttons should link to the Contact page (or scroll to the contact form) so potential clients can immediately reach out.
+
+**Responsiveness:**
+- On mobile, the three cards stack vertically (single column).
+- On tablet, cards may display as 1 or 2 per row depending on available width.
+
 ### 5.3 Projects Page
 - Displays all projects in a single-page grid layout.
 - **Grid:** Maximum of 3 columns. Rows will increase automatically depending on the number of projects.
@@ -119,9 +150,11 @@ This website is aimed at two types of clients:
 ## 6. Design & Branding (UI/UX)
 - **Color Palette:**
   - **Background:** Black (e.g., `#0a0a0a` or `#000000`)
+  - **Section Accent (Pricing):** Dark Navy (e.g., `#0d1117` or `#0f172a`)
   - **Headings:** Navy Blue (e.g., `#1a2a4a`)
   - **Sub-headings & Accents:** Blue (e.g., `#2a6fdb`)
   - **Body Text:** White (e.g., `#ffffff` or `#e0e0e0` for softer readability)
+  - **Pricing Feature Checkmarks:** Green (e.g., `#22c55e`)
 - **Typography:** Modern sans-serif font (e.g., Inter, Poppins, or DM Sans). Ensure a clear visual hierarchy between headings and body text.
 - **Imagery:** High-quality, optimized images (profile photo, project screenshots, certificate screenshots).
 
@@ -143,12 +176,12 @@ This website is aimed at two types of clients:
 | Phase | Tasks | Estimated Time |
 | :--- | :--- | :--- |
 | 1 | Structure HTML, set up CSS variables, initialize Git | 1 day |
-| 2 | Build Homepage (Hero, About, Quote, Demos, Projects) | 2 days |
+| 2 | Build Homepage (Hero, About, Quote, Demos, Projects, Pricing) | 2–3 days |
 | 3 | Build Projects & Certificates pages + modals | 2 days |
 | 4 | Build Contact page + form validation | 1 day |
 | 5 | Polish interactivity, animations, and responsiveness | 2 days |
 | 6 | SEO, performance optimizations, testing, and deployment | 1 day |
-| **Total** | | **~9 days** |
+| **Total** | | **~10 days** |
 
 ## 10. Success Criteria (Definition of "Done")
 - [ ] All 4 pages (Home, Projects, Certificates, Contact) render correctly without 404 errors.
@@ -160,6 +193,9 @@ This website is aimed at two types of clients:
 - [ ] The LinkedIn and GitHub links in the contact table open in a new tab.
 - [ ] The website passes the Lighthouse score target (90+) on desktop.
 - [ ] The website looks flawless on mobile, tablet, and desktop screen sizes.
+- [ ] The Pricing section renders correctly with all 3 tiers, the "MOST POPULAR" badge on the Popular card, green checkmarks on all features, and correct button styles (filled vs. outlined).
+- [ ] Pricing card buttons navigate to the Contact page / scroll to the contact form.
+- [ ] Pricing cards stack vertically on mobile.
 
 ## 11. Open Questions / Assumptions (To be confirmed)
 - [ ] **Profile Picture:** Is the profile picture for the "About Me" section ready? (If not, use a placeholder).
@@ -168,3 +204,5 @@ This website is aimed at two types of clients:
 - [ ] **Layout Clarification (About Me):** You mentioned "picture on the right and bio on the right". I assumed **Picture on the Left, Bio on the Right**. Please confirm or correct this.
 - [ ] **Form Submission:** Should the contact form just simulate a submission (frontend only), or do we need to integrate a backend/Formspree API to actually send emails?
 - [ ] **Certificates Heading:** You mentioned the H1 heading should be "Website Demos". Do you want that exactly, or should it be "Certificates" or "Credentials"?
+- [ ] **Pricing CTA:** Should clicking a pricing button scroll to the Contact form on the same page, or navigate to the Contact page entirely?
+- [ ] **Pricing Currency:** Prices are shown in USD ($). Should a PKR equivalent also be displayed (e.g., "~PKR 11,000") for Pakistani clients?
