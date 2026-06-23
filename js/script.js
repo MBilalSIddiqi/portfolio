@@ -440,6 +440,19 @@
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const status = form.querySelector(".form-status");
 
+    // Prefill the message when arriving from a pricing button (?plan=Tier)
+    const PLAN_LABELS = { starter: "Starter", popular: "Popular", business: "Business" };
+    const plan = new URLSearchParams(window.location.search).get("plan");
+    const planKey = plan && plan.toLowerCase();
+    if (planKey && PLAN_LABELS[planKey]) {
+      const message = form.elements["message"];
+      if (message && !message.value.trim()) {
+        message.value =
+          "Hi Bilal, I'm interested in the " + PLAN_LABELS[planKey] +
+          " package. Please get in touch about getting started.";
+      }
+    }
+
     const setError = (field, msg) => {
       const err = form.querySelector(`[data-error-for="${field}"]`);
       if (err) err.textContent = msg || "";
@@ -514,12 +527,43 @@
   }
 
   /* -----------------------------------------------------
+     5b. PRICING — currency toggle (USD <-> PKR)
+     ----------------------------------------------------- */
+  function initPricingToggle() {
+    const toggle = document.getElementById("currency-toggle");
+    if (!toggle) return;
+
+    // Both discounted (.price-card__amount) and original (.price-card__original)
+    // prices carry data-usd / data-pkr, so one selector formats them all.
+    const amounts = document.querySelectorAll("[data-usd][data-pkr]");
+    const opts = toggle.querySelectorAll(".currency-toggle__opt");
+
+    const render = (cur) => {
+      amounts.forEach((el) => {
+        if (cur === "PKR") {
+          el.textContent = "₨" + Number(el.dataset.pkr).toLocaleString("en-PK");
+        } else {
+          el.textContent = "$" + el.dataset.usd;
+        }
+      });
+      opts.forEach((o) => o.classList.toggle("active", o.dataset.currency === cur));
+      toggle.dataset.currency = cur;
+      toggle.setAttribute("aria-pressed", String(cur === "PKR"));
+    };
+
+    toggle.addEventListener("click", () => {
+      render(toggle.dataset.currency === "USD" ? "PKR" : "USD");
+    });
+  }
+
+  /* -----------------------------------------------------
      6. INIT
      ----------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", () => {
     buildNav();
     renderProjects();
     renderCertificates();
+    initPricingToggle();
     initContactForm();
   });
 })();
