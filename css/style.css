@@ -156,6 +156,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   justify-content: space-between;
   gap: 1rem;
   min-height: 64px;
+  position: relative;
 }
 
 .nav__brand {
@@ -232,6 +233,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 @media (min-width: 761px) {
   .nav__toggle { display: none; }
+  .nav__list {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 /* ============================================================
