@@ -62,7 +62,11 @@ This website is aimed at two types of clients:
 #### 5.2.1 Hero Section
 - **Layout:** Text on the right side.
 - **Main Headline:** "Building Websites tailored for your needs" — written in **bold and italic** (choose a modern, premium font).
-- **Sub-headline (Introduction):** "Context AI Web Developer" — written in a smaller, normal (non-bold, non-italic) font.
+- **Sub-headline (Introduction):** Typing animation cycling through the following phrases (see Section 5.2.7 for full animation spec):
+  1. "Fast delivery. Affordable rates."
+  2. "Clean, modern UI on every project."
+  3. "Built for Pakistani businesses."
+  4. "No-tech maintenance, always."
 - **Two Buttons (side-by-side):**
   1. **"Get in Touch"** — Background: Dark Navy Blue, Text: White.
   2. **"See my work"** — Background: White, Text: Black.
@@ -89,6 +93,38 @@ This website is aimed at two types of clients:
 - **Styling:** Black background, white font.
 - **Placeholder Text:** For now, use "Side Project 1", "Side Project 2", ... through "Side Project 6".
 - **CTA Button (centered below the grid):** A rounded square button with a small GitHub icon placed before the text. The text should read "Explore my other repos". The button must be centered on the page.
+
+#### 5.2.7 Animations (Sitewide)
+
+##### Full-Page Drifting Shapes Background
+- Inject a `<canvas>` element as the very first child of `<body>`, positioned `fixed` behind all content (`z-index: -1`), covering `100vw × 100vh`.
+- Draw ~22 outline-only shapes (circles, squares, triangles) using `ctx.stroke()` — no fills.
+- **Colors:** Indigo/purple tones (`#6366f1`, `#818cf8`, `#334155`) at very low opacity (`0.04–0.18`) so shapes are subtle and don't compete with content.
+- Each shape drifts slowly (~0.4px/frame), rotates slightly, and wraps around when it exits the viewport edge.
+- Use `requestAnimationFrame` for smooth 60fps animation.
+- Set `pointer-events: none` on the canvas so it never blocks clicks or scrolling.
+- Use the **Page Visibility API** (`document.addEventListener('visibilitychange', ...)`) to pause animation when the browser tab is hidden and resume when visible — saves CPU.
+- **Mobile optimisation:** Reduce shape count to 10 on viewports narrower than 768px to preserve battery life.
+
+##### Hero Typing Animation
+- Target the `.hero__subtitle` element (or equivalent sub-headline element in the hero section).
+- Replace its static text with a looping type → pause → delete → next phrase cycle.
+- **Phrases to cycle through (in order, looping):**
+  1. "Fast delivery. Affordable rates."
+  2. "Clean, modern UI on every project."
+  3. "Built for Pakistani businesses."
+  4. "No-tech maintenance, always."
+- **Timing:**
+  - Typing speed: ~55ms per character
+  - Deleting speed: ~28ms per character
+  - Pause before deleting: ~1,500ms (1.5 seconds)
+- Add a blinking cursor rendered as a `<span>` styled as a 2px-wide vertical bar, animated via CSS (`animation: blink 0.7s step-end infinite`) — not driven by JS.
+- The typing animation must start only after the DOM is fully loaded (`DOMContentLoaded`).
+
+##### Implementation Rules
+- All animation code goes in `js/script.js` and `css/style.css` only — do **not** modify `index.html` except to verify element class names.
+- No external libraries — pure vanilla JS (ES6+) only.
+- Both animations must be included in Phase 5 (Polish & Interactivity) of the project timeline.
 
 #### 5.2.6 Pricing Section
 - **Heading:** "Transparent Pricing" (H2, centered, bold).
@@ -196,6 +232,9 @@ This website is aimed at two types of clients:
 - [ ] The Pricing section renders correctly with all 3 tiers, the "MOST POPULAR" badge on the Popular card, green checkmarks on all features, and correct button styles (filled vs. outlined).
 - [ ] Pricing card buttons navigate to the Contact page / scroll to the contact form.
 - [ ] Pricing cards stack vertically on mobile.
+- [x] The full-page drifting shapes canvas animation runs smoothly at 60fps, pauses when the tab is hidden, and reduces to 10 shapes on mobile viewports.
+- [x] The hero typing animation cycles through all 4 phrases with correct timing, displays a blinking cursor, and starts only after DOMContentLoaded.
+- [x] The canvas has `pointer-events: none` and does not block any clicks or interactive elements.
 
 ## 11. Open Questions / Assumptions (To be confirmed)
 - [ ] **Profile Picture:** Is the profile picture for the "About Me" section ready? (If not, use a placeholder).

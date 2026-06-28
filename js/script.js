@@ -33,7 +33,7 @@
     header.innerHTML = `
       <div class="container">
         <nav class="nav" aria-label="Primary">
-          <a class="nav__brand" href="index.html">Bilal<span>.dev</span></a>
+          <a class="nav__brand" href="index.html"><img class="nav__brand-logo" src="assets/logo.svg" alt="" width="42" height="42" />Bilal<span>.dev</span></a>
           <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span></span><span></span><span></span>
           </button>
@@ -57,6 +57,13 @@
         toggle.setAttribute("aria-expanded", "false");
       }
     });
+
+    // Lift the header with a shadow once the page is scrolled.
+    const onScroll = () => {
+      header.classList.toggle("is-scrolled", window.scrollY > 8);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
   }
 
   function setActiveNav() {
@@ -71,6 +78,45 @@
         link.setAttribute("aria-current", "page");
       }
     });
+  }
+
+  /* -----------------------------------------------------
+     1b. SHARED FOOTER
+     Injected into <footer id="site-footer"> on every page.
+     ----------------------------------------------------- */
+  function buildFooter() {
+    const footer = document.getElementById("site-footer");
+    if (!footer) return;
+
+    const navItems = NAV_LINKS.map(
+      (l) => `<a href="${l.href}">${l.label}</a>`
+    ).join("");
+
+    footer.className = "site-footer";
+    footer.innerHTML = `
+      <div class="container">
+        <div class="footer__grid">
+          <div class="footer__brand">
+            <a class="footer__logo" href="index.html"><img class="footer__logo-img" src="assets/logo.svg" alt="" width="42" height="42" />Bilal<span>.dev</span></a>
+            <p class="footer__tagline">Building websites tailored for your needs — so you don't have to be tech-savvy to manage them.</p>
+          </div>
+          <nav class="footer__nav" aria-label="Footer">${navItems}</nav>
+          <div class="footer__social">
+            <a href="https://github.com/MBilalSIddiqi" target="_blank" rel="noopener" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/muhammad-bilal-siddiqui-11299229a/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="mailto:bilalseo009@gmail.com" aria-label="Email">
+              <i class="fas fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <p>&copy; 2026 Mohammad Bilal Siddiqui. All rights reserved.</p>
+        </div>
+      </div>`;
   }
 
   /* -----------------------------------------------------
@@ -557,13 +603,257 @@
   }
 
   /* -----------------------------------------------------
+     5c. SCROLL REVEAL (fade + rise on entering viewport)
+     ----------------------------------------------------- */
+  function initScrollReveal() {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Elements worth animating in, across all pages.
+    const selectors = [
+      ".section__title",
+      ".section__lead",
+      ".about__grid",
+      ".quote blockquote",
+      ".demo-card",
+      ".price-card",
+      ".sp-card",
+      ".cta-center",
+      ".card",
+      ".hero__art",
+      ".hero__title",
+      ".hero__subtitle",
+      ".hero__actions",
+      ".hero__stats",
+      ".contact__grid > *",
+    ];
+    const targets = document.querySelectorAll(selectors.join(","));
+    if (!targets.length) return;
+
+    // No IntersectionObserver / reduced motion: show everything immediately.
+    if (prefersReduced || !("IntersectionObserver" in window)) {
+      targets.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+
+    targets.forEach((el) => el.classList.add("reveal"));
+
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    targets.forEach((el) => io.observe(el));
+  }
+
+  /* -----------------------------------------------------
+     5d. HERO TYPING ANIMATION
+     Cycles through phrases in .hero__subtitle: type → pause →
+     delete → next. Blinking cursor is CSS-driven (.type-cursor).
+     ----------------------------------------------------- */
+  function initHeroTyping() {
+    const el = document.querySelector(".hero__subtitle");
+    if (!el) return;
+
+    const phrases = [
+      "Fast delivery. Affordable rates.",
+      "Clean, modern UI on every project.",
+      "Built for Pakistani businesses.",
+      "No-tech maintenance, always.",
+    ];
+
+    // Rebuild: a text node we type into + a blinking cursor span.
+    el.textContent = "";
+    const textSpan = document.createElement("span");
+    textSpan.className = "type-text";
+    const cursor = document.createElement("span");
+    cursor.className = "type-cursor";
+    cursor.setAttribute("aria-hidden", "true");
+    el.append(textSpan, cursor);
+
+    // Reduced motion: show the first phrase statically, no looping.
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) {
+      textSpan.textContent = phrases[0];
+      return;
+    }
+
+    const TYPE_MS = 55;
+    const DELETE_MS = 28;
+    const PAUSE_MS = 1500;
+    let phrase = 0;
+    let chars = 0;
+    let deleting = false;
+
+    const tick = () => {
+      const full = phrases[phrase];
+      if (!deleting) {
+        chars++;
+        textSpan.textContent = full.slice(0, chars);
+        if (chars === full.length) {
+          deleting = true;
+          setTimeout(tick, PAUSE_MS);
+        } else {
+          setTimeout(tick, TYPE_MS);
+        }
+      } else {
+        chars--;
+        textSpan.textContent = full.slice(0, chars);
+        if (chars === 0) {
+          deleting = false;
+          phrase = (phrase + 1) % phrases.length;
+          setTimeout(tick, TYPE_MS);
+        } else {
+          setTimeout(tick, DELETE_MS);
+        }
+      }
+    };
+
+    setTimeout(tick, 400);
+  }
+
+  /* -----------------------------------------------------
+     5e. DRIFTING SHAPES CANVAS (full-page background)
+     Outline-only circles/squares/triangles drift, rotate, and
+     wrap. Fixed behind all content; pauses when tab is hidden.
+     ----------------------------------------------------- */
+  function initShapesCanvas() {
+    // Honour reduced motion: skip the animation entirely.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "bg-canvas";
+    canvas.setAttribute("aria-hidden", "true");
+    document.body.insertBefore(canvas, document.body.firstChild);
+    const ctx = canvas.getContext("2d");
+
+    const COLORS = ["#6366f1", "#818cf8", "#334155"];
+    let w = 0;
+    let h = 0;
+    let shapes = [];
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const seedShapes = () => {
+      const count = w < 768 ? 10 : 22; // fewer shapes on mobile (battery)
+      shapes = [];
+      for (let i = 0; i < count; i++) {
+        const dir = Math.random() * Math.PI * 2;
+        shapes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: 20 + Math.random() * 60,
+          type: Math.floor(Math.random() * 3), // 0 circle, 1 square, 2 triangle
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          alpha: 0.04 + Math.random() * 0.14,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.004,
+          vx: Math.cos(dir) * 0.4,
+          vy: Math.sin(dir) * 0.4,
+        });
+      }
+    };
+
+    const drawShape = (s) => {
+      ctx.save();
+      ctx.translate(s.x, s.y);
+      ctx.rotate(s.rot);
+      ctx.globalAlpha = s.alpha;
+      ctx.strokeStyle = s.color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      const r = s.size / 2;
+      if (s.type === 0) {
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
+      } else if (s.type === 1) {
+        ctx.rect(-r, -r, s.size, s.size);
+      } else {
+        ctx.moveTo(0, -r);
+        ctx.lineTo(r, r);
+        ctx.lineTo(-r, r);
+        ctx.closePath();
+      }
+      ctx.stroke();
+      ctx.restore();
+    };
+
+    let raf = null;
+    const frame = () => {
+      ctx.clearRect(0, 0, w, h);
+      shapes.forEach((s) => {
+        s.x += s.vx;
+        s.y += s.vy;
+        s.rot += s.rotSpeed;
+        const m = s.size;
+        if (s.x - m > w) s.x = -m;
+        else if (s.x + m < 0) s.x = w + m;
+        if (s.y - m > h) s.y = -m;
+        else if (s.y + m < 0) s.y = h + m;
+        drawShape(s);
+      });
+      raf = requestAnimationFrame(frame);
+    };
+
+    const start = () => {
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
+    const stop = () => {
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
+    };
+
+    resize();
+    seedShapes();
+    start();
+
+    // Re-fit on resize (debounced) and re-seed for the new shape count.
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resize();
+        seedShapes();
+      }, 200);
+    });
+
+    // Page Visibility API — pause when the tab is hidden, save CPU.
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop();
+      else start();
+    });
+  }
+
+  /* -----------------------------------------------------
      6. INIT
      ----------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", () => {
     buildNav();
+    buildFooter();
     renderProjects();
     renderCertificates();
     initPricingToggle();
     initContactForm();
+    initScrollReveal();
+    initHeroTyping();
+    initShapesCanvas();
   });
 })();

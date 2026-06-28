@@ -8,7 +8,9 @@ For the original requirements, see `PROMPT.md` and `spec.md`; for the roadmap, s
 > real project images wired in for 8 of 15 projects (`assets/images/`); the other 7 projects, all
 > certificates, and the profile photo still use picsum placeholders. Phase 5 deployment **done** —
 > the site is **live** on Netlify (primary, with GitHub continuous deployment) and GitHub Pages
-> (mirror). The contact form is wired to **Netlify Forms** (real backend). Remaining: remaining real
+> (mirror). The contact form is wired to **Netlify Forms** (real backend). **Phase 6 (UI/UX global
+> polish) done** — typographic scale, depth/glow, scroll-reveal motion, animated nav/header,
+> restructured JS-injected footer, and soft form focus rings (see §11). Remaining: remaining real
 > assets and Lighthouse/cross-browser testing.
 
 > **Live URLs:**
@@ -88,6 +90,16 @@ Real mockups for 8 of 15 projects (filenames match each project's `seed`):
 
 Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow, transition.
 
+### Phase 6 polish tokens (`:root`)
+| Variable | Value | Use |
+|----------|-------|-----|
+| `--ease` | `cubic-bezier(0.22, 1, 0.36, 1)` | Springy ease-out for all motion |
+| `--transition` | `0.25s var(--ease)` | Shared transition shorthand |
+| `--border-hover` | `#3a4660` | Second-tier (hover) border color |
+| `--edge-light` | `inset 0 1px 0 rgba(255,255,255,0.04)` | Inner top highlight on raised cards |
+| `--space-1`…`--space-6` | `0.25rem`→`2.5rem` | Spacing scale |
+| `--fs-sm` / `--fs-base` / `--fs-lg` | `0.9` / `1` / `1.25rem` | Type scale |
+
 ### Notable styling decisions
 - **Section titles render in white with a blue accent word** (e.g. "About <span>Me</span>"),
   not pure navy. Pure navy on a black background fails contrast, so navy is kept as a token while
@@ -97,6 +109,9 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
 - **Reduced-motion** support — animations/transitions disabled under
   `prefers-reduced-motion: reduce`.
 - Reusable button variants: `.btn--navy`, `.btn--white`, `.btn--blue`, `.btn--ghost`, `.btn--github`.
+- **Phase 6 polish (see §11)** added: tighter heading rhythm + `text-wrap` balancing, a fixed hero
+  radial glow, `--edge-light` inner highlight on raised cards, scroll-reveal (`.reveal`/`.is-visible`),
+  a CTA sheen sweep, hamburger→X + scroll-state header animations, and soft form focus rings.
 
 ---
 
@@ -111,8 +126,17 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
 - **Mobile hamburger** — toggle button shows/hides the nav list under 760px; closes on link tap.
 - *Requires JavaScript enabled to render the nav.*
 
-### Footer
-- Static footer on every page with copyright + Get-in-touch / GitHub links.
+### Footer (JS-injected — Phase 6)
+- Defined once in `js/script.js` (`buildFooter()`) and injected into `<footer id="site-footer">` on
+  every page — single source of truth, reuses the shared `NAV_LINKS` array.
+- Three-part layout (3-column left-aligned at ≥760px, stacked on mobile):
+  1. **Brand + tagline** — "Bilal.dev" + "Building websites tailored for your needs — so you don't
+     have to be tech-savvy to manage them."
+  2. **Quick nav** — the same Home / Projects / Certificates / Contact links.
+  3. **Social icons** — circular 42px icon buttons (GitHub, LinkedIn, Email) with edge-light +
+     translateY(-3px) hover.
+- A `.footer__bottom` bar carries the copyright "© 2026 Mohammad Bilal Siddiqui. All rights reserved."
+- *Like the nav, the footer now requires JavaScript enabled to render.*
 
 ### Modal system (reusable)
 - `openModal(html)` / `closeModal()` in `js/script.js`. One modal element is created on demand
@@ -127,9 +151,12 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
 
 ### `index.html` (Home)
 - **Hero** — split grid: animated abstract `</>` blob (left at desktop) + text (right). Headline
-  "Building Websites **tailored** for your needs" (bold + italic, accent word in blue),
-  sub-headline "Context AI Web Developer". Two buttons: **Get in Touch** (navy) and
-  **See my work** (white). Stats: **12+ Example Websites**, **2 Websites under construction**.
+  "Building Websites **tailored** for your needs" (bold + italic, accent word in blue). The
+  sub-headline is a **typing animation** (`initHeroTyping`) that cycles type → pause → delete
+  through 4 phrases ("Fast delivery. Affordable rates.", "Clean, modern UI on every project.",
+  "Built for Pakistani businesses.", "No-tech maintenance, always.") with a CSS-blinking cursor;
+  under reduced-motion it shows the first phrase statically. Two buttons: **Get in Touch** (navy)
+  and **See my work** (white). Stats: **15+ Example Websites**, **2 Websites under construction**.
 - **About Me** — split layout. **Paragraph/bio on the LEFT, profile photo on the RIGHT** (desktop;
   stacks on mobile). Bio written from `spec.md` (17yo self-taught Python dev, Context Engineering,
   value-prop checklist).
@@ -192,8 +219,12 @@ shared script is safe on every page.
 
 | Function | Responsibility |
 |----------|----------------|
-| `buildNav()` | Inject shared nav into `#site-header`, wire mobile toggle |
+| `buildNav()` | Inject shared nav into `#site-header`, wire mobile toggle + hamburger→X + scroll-state `.is-scrolled` shadow |
+| `buildFooter()` | Inject shared 3-part footer (brand+tagline / quick nav / social icons) into `#site-footer`, reusing `NAV_LINKS` |
 | `setActiveNav()` | Add `.active` / `aria-current` to the current page's link |
+| `initScrollReveal()` | IntersectionObserver scroll-reveal — adds `.reveal`→`.is-visible` as elements enter view; instant-show fallback under reduced-motion / no IO support |
+| `initHeroTyping()` | Hero sub-headline typing animation — cycles 4 phrases (type/pause/delete) with a CSS-blinking `.type-cursor`; shows the first phrase statically under reduced-motion |
+| `initShapesCanvas()` | Injects a fixed full-page `<canvas>` (`z-index: -1`, `pointer-events: none`) of ~22 drifting/rotating outline shapes (10 on <768px); pauses on tab-hidden via Page Visibility API; skipped entirely under reduced-motion |
 | `ensureModal()` / `openModal()` / `closeModal()` | Reusable modal with X / outside-click / Esc |
 | `renderProjects()` | Build project cards from `PROJECTS`, wire modal on click; uses `images[]` (real) with picsum fallback, renders carousel when >1 image |
 | `buildCarousel()` / `wireCarousel()` | Build + wire the multi-image modal carousel (prev/next/dots, wrapping index) |
@@ -262,3 +293,39 @@ A single `git push origin main` therefore updates both live sites.
 - **Email notifications for the form:** the contact form now posts to **Netlify Forms** (submissions
   collect in the Netlify dashboard → Forms tab). Still to do: add an email notification under
   Forms → Form notifications so submissions land in an inbox automatically.
+
+---
+
+## 11. Phase 6 — UI/UX Global Polish
+
+A site-wide pass to lift the visual quality without changing layout/content. All six items shipped;
+each respects `prefers-reduced-motion`.
+
+1. **Typographic scale & rhythm** — spacing scale (`--space-1`…`6`) and type scale
+   (`--fs-sm/base/lg`) tokens; h1/h2/h3 tightened (`line-height: 1.15`, `letter-spacing: -0.02em`,
+   h3 `-0.01em`) with `text-wrap: balance`; `.section__lead` gets `text-wrap: pretty`.
+2. **Color & depth refinement** — a fixed hero **radial glow** painted on `<body>`
+   (`radial-gradient(900px circle at 50% -5%, rgba(42,111,219,0.1), transparent 60%)`,
+   `background-attachment: fixed`); a two-tier border system (`--border` → `--border-hover` on
+   hover); and an inner top highlight (`--edge-light`) on raised cards (`.demo-card`, `.price-card`,
+   `.sp-card`, `.card`, `.info-table`), which on hover combine `var(--shadow), var(--edge-light)`.
+3. **Motion & micro-interactions** — scroll-reveal via `IntersectionObserver`
+   (`initScrollReveal()`, threshold `0.12`, `rootMargin: 0px 0px -40px 0px`): elements fade + rise
+   24px into place once, then unobserve. A springy `--ease` token drives transitions. A **CTA sheen
+   sweep** — a diagonal light gradient slides across `.btn--blue` / `.btn--github` on hover via
+   `::after`.
+4. **Nav & header polish** — the mobile hamburger animates into an **X** when expanded
+   (`aria-expanded="true"`); the header gains a `.is-scrolled` background/shadow once `scrollY > 8`
+   (passive scroll listener in `buildNav`); the mobile dropdown is gated with
+   `visibility: hidden; pointer-events: none` until `.open`, so its links aren't focusable while
+   closed.
+5. **Footer restructure** — old static footer replaced by a JS-injected 3-part footer
+   (`buildFooter()`): brand + tagline · quick nav · circular social icons, with a copyright bar.
+   See §4 → Footer.
+6. **Focus & form feel** — form inputs/textareas get a soft focus ring
+   (`box-shadow: 0 0 0 3px rgba(42,111,219,0.15)` + blue border) instead of a hard border jump,
+   plus a `--border-hover` hover state.
+
+> **Note:** with the footer now JS-injected (joining the nav), **both** the header and footer
+> require JavaScript to render. This is an intentional DRY trade-off — one definition instead of
+> four copies per region.
