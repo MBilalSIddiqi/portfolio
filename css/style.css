@@ -79,6 +79,11 @@ img { max-width: 100%; display: block; }
 a { color: var(--blue); text-decoration: none; transition: color var(--transition); }
 a:hover { color: var(--text); }
 
+/* Inline text links must not rely on color alone (WCAG 1.4.1) — underline
+   links sitting inside body copy, leaving nav/buttons/icons untouched. */
+.section__lead a,
+.info-table a { text-decoration: underline; text-underline-offset: 2px; }
+
 h1, h2, h3 {
   color: var(--navy);
   line-height: 1.15;
