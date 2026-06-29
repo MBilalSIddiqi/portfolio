@@ -32,9 +32,8 @@
 ## 🧹 Phase 4: Polish & Content
 - [ ] Add Bilal's profile picture to About Me section (still picsum placeholder)
 - [x] Move real images into `assets/images/`
-- [x] Wire real project images for 8 matched projects (bakery, health, industrial, jewelry, kids, lawyer, tech, travel)
+- [x] Wire real project images for all 15 projects (no picsum placeholders remain on the Projects page)
 - [x] Add modal carousel for multi-image projects (travel: 2 imgs, kids: 3 imgs)
-- [ ] Add real images for remaining 7 projects (bauhaus, gaming, photography, retro, skincare, urban, wedding — still picsum)
 - [ ] Add real certificate screenshots (still picsum)
 - [ ] Write actual bio text
 - [x] Test all links (LinkedIn, GitHub, Email)

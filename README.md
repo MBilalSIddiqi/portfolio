@@ -86,8 +86,9 @@ Most content lives in clearly marked places:
 - **Projects** — edit the `PROJECTS` array in [`js/script.js`](js/script.js).
 - **Certificates** — edit the `CERTIFICATES` array in [`js/script.js`](js/script.js).
 - **Bio / hero / contact details** — edit the relevant HTML files directly.
-- **Images** — currently use [picsum.photos](https://picsum.photos) placeholders; replace the
-  `src` URLs with real images (e.g. an `assets/images/` folder).
+- **Images** — all 15 project mockups are real files in `assets/images/` (wired via each project's
+  `images:` array). Only the certificates and profile photo still use
+  [picsum.photos](https://picsum.photos) placeholders.
 - **Colors** — change the CSS variables in `:root` at the top of [`css/style.css`](css/style.css).
 
 ---

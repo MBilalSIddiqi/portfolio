@@ -140,6 +140,7 @@
       title: "Bauhaus Design Collective",
       tag: "Design & Art",
       seed: "bauhaus_web1",
+      images: ["assets/images/bahurrus_web1.png"],
       live: "https://mbilalsiddiqi.github.io/bauhaus_web1/",
       desc: "A bold Bauhaus-inspired site with geometric shapes and primary colors.",
       detail:
@@ -149,6 +150,7 @@
       title: "SleekGamer",
       tag: "Gaming",
       seed: "gaming_web1",
+      images: ["assets/images/gaming-mockup.jpg"],
       live: "https://mbilalsiddiqi.github.io/gaming_web1/",
       desc: "A dark, neon-purple gaming portfolio with glassmorphism.",
       detail:
@@ -212,6 +214,7 @@
       title: "ARCHIVE.01 Studio",
       tag: "Photography & Portfolio",
       seed: "photography_web1",
+      images: ["assets/images/archieve_web1.png"],
       live: "https://mbilalsiddiqi.github.io/photography_web1/",
       desc: "A Swiss-style monochrome photography studio portfolio.",
       detail:
@@ -221,6 +224,7 @@
       title: "NEURAL_LINK",
       tag: "Creative & Experimental",
       seed: "retro_web1",
+      images: ["assets/images/neural_link1.png"],
       live: "https://mbilalsiddiqi.github.io/retro_web1/",
       desc: "A retro-futuristic cyberpunk terminal interface.",
       detail:
@@ -230,6 +234,7 @@
       title: "AURELIA Botanicals",
       tag: "Beauty & E-commerce",
       seed: "skincare_web1",
+      images: ["assets/images/botanical_web1.png"],
       live: "https://mbilalsiddiqi.github.io/skincare_web1/",
       desc: "A nature-luxury organic skincare line & catalog.",
       detail:
@@ -262,6 +267,7 @@
       title: "URBN_ZN",
       tag: "Fashion & Streetwear",
       seed: "urban_web1",
+      images: ["assets/images/urban_web1.png"],
       live: "https://mbilalsiddiqi.github.io/urban_web1/",
       desc: "A brutalist underground streetwear & zine collective.",
       detail:
@@ -271,6 +277,7 @@
       title: "Ethereal Events",
       tag: "Events & Weddings",
       seed: "wedding_web1",
+      images: ["assets/images/ethernal_web1.png"],
       live: "https://mbilalsiddiqi.github.io/wedding_web1/",
       desc: "A soft, pastel wedding & event planning service.",
       detail:

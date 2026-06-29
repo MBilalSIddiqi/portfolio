@@ -4,9 +4,9 @@ This document records everything currently implemented in the portfolio website 
 **Mohammad Bilal Siddiqui**. It is the source of truth for the *current state* of the codebase.
 For the original requirements, see `PROMPT.md` and `spec.md`; for the roadmap, see `TODO.md`.
 
-> **Status:** Phases 1–3 complete (structure, styling, interactivity). Phase 4 partially done —
-> real project images wired in for 8 of 15 projects (`assets/images/`); the other 7 projects, all
-> certificates, and the profile photo still use picsum placeholders. Phase 5 deployment **done** —
+> **Status:** Phases 1–3 complete (structure, styling, interactivity). Phase 4 nearly done —
+> real project images wired in for **all 15 of 15 projects** (`assets/images/`); only the
+> certificates and the profile photo still use picsum placeholders. Phase 5 deployment **done** —
 > the site is **live** on Netlify (primary, with GitHub continuous deployment) and GitHub Pages
 > (mirror). The contact form is wired to **Netlify Forms** (real backend). **Phase 6 (UI/UX global
 > polish) done** — typographic scale, depth/glow, scroll-reveal motion, animated nav/header,
@@ -27,8 +27,10 @@ For the original requirements, see `PROMPT.md` and `spec.md`; for the roadmap, s
 - **Vanilla JavaScript (ES6+)** — single IIFE module, no libraries/frameworks.
 - **Google Fonts** — Inter (weights 400/500/600/800).
 - **Font Awesome 6.5.1** — via CDN, for GitHub/LinkedIn/UI icons.
-- **Images** — real project mockups in `assets/images/` (8 projects); picsum.photos placeholders
-  (`https://picsum.photos/seed/{seed}/...`) still used for the other 7 projects, certificates, and
+- **Logo/favicon** — `assets/logo.svg` (the chosen "Terminal" logo) wired as the SVG favicon on
+  every page and reused as the footer brand mark.
+- **Images** — real project mockups in `assets/images/` (all 15 projects); picsum.photos
+  placeholders (`https://picsum.photos/seed/{seed}/...`) still used only for the certificates and
   the profile photo.
 
 No build step, no dependencies — open the HTML files in a browser (or via a static server) to run.
@@ -48,7 +50,8 @@ portflio_web3/
 ├── js/
 │   └── script.js       # All global interactivity
 ├── assets/
-│   └── images/         # Real project mockups (11 files for 8 projects)
+│   ├── images/         # Real project mockups (18 files covering all 15 projects)
+│   └── logo.svg        # Site logo / SVG favicon (the chosen "Terminal" logo)
 ├── netlify.toml        # Netlify config (static root publish, no build step)
 ├── .gitignore          # Excludes junk, .netlify/, local agent tooling
 ├── README.md           # Project readme (live links)
@@ -60,14 +63,20 @@ portflio_web3/
 ```
 
 > Note: `assets/images/` exists with real project mockups; `README.md` and `netlify.toml` now exist.
-> `assets/pdfs/` from `file system.txt` is **not yet created**. Certificates, the profile photo, and
-> 7 projects still use picsum.photos placeholders. Untracked local tooling (`.agents/`,
-> `skills-lock.json`, `.netlify/`) is gitignored and not part of the site.
+> `assets/pdfs/` from `file system.txt` is **not yet created**. Only the certificates and the profile
+> photo still use picsum.photos placeholders. `assets/logo.svg` ships as the favicon; the four
+> logo concept candidates (`assets/logos/`) and `logo-preview.html` are kept locally but gitignored.
+> Untracked local tooling (`.agents/`, `skills-lock.json`, `.netlify/`) is also gitignored and not
+> part of the site.
 
 ### `assets/images/` contents
-Real mockups for 8 of 15 projects (filenames match each project's `seed`):
+Real mockups for all 15 projects (most filenames match each project's `seed`, with a few
+spelling variants referenced explicitly via the `images:` array):
 `bakery_web1.png`, `health_web1.jpg`, `industrial_web1.png`, `jewelry_web1.jpg`, `lawyer_web1.jpg`,
-`tech_web1.jpg`, plus multi-image sets `kids_web1-1/2/3.jpg` (3) and `travel_web1-1/2.jpg` (2).
+`tech_web1.jpg`, `gaming-mockup.jpg`, `bahurrus_web1.png` (Bauhaus), `neural_link1.png` (NEURAL_LINK),
+`botanical_web1.png` (AURELIA Botanicals), `urban_web1.png`, `archieve_web1.png` (ARCHIVE.01),
+`ethernal_web1.png` (Ethereal Events), plus multi-image sets `kids_web1-1/2/3.jpg` (3) and
+`travel_web1-1/2.jpg` (2).
 
 ---
 
@@ -180,8 +189,9 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
   AURELIA Fine Jewelry, Sterling & Associates, Solis Escapes, KiddoCreative).
 - Each card (image + tag + title + description) opens a **modal** with the larger image, full
   detail text, and a "Visit live site" button.
-- **Images:** 8 projects use real mockups from `assets/images/` (referenced via an optional
-  `images: [...]` array on the project object); the other 7 fall back to picsum placeholders.
+- **Images:** all 15 projects use real mockups from `assets/images/` (referenced via an
+  `images: [...]` array on each project object). The picsum fallback in `renderProjects()` remains
+  as a safety net but is no longer triggered by any project.
 - **Carousel:** projects with more than one image (travel = 2, kids = 3) render a multi-image
   carousel inside the modal — prev/next arrows + dots, index wraps around. Single-image projects
   show a plain `<img>` (no carousel).
@@ -251,6 +261,9 @@ shared script is safe on every page.
   status `aria-live="polite"`, `:focus-visible` outlines.
 - Per-page `<title>`, meta description, and Open Graph tags.
 - `loading="lazy"` on below-the-fold images; explicit width/height on the profile image.
+- **Inline links are underlined** (`.section__lead a`, `.info-table a`) so they don't rely on color
+  alone — satisfies WCAG 1.4.1 ("Links rely on color to be distinguishable"). Nav links, buttons,
+  and footer icon buttons stay underline-free since they're already visually distinct.
 
 ---
 
@@ -284,9 +297,8 @@ A single `git push origin main` therefore updates both live sites.
 
 ## 10. Not Yet Done (see `TODO.md`)
 
-- **Remaining real assets:** profile photo, certificate screenshots, and real images for the 7
-  unmatched projects (bauhaus, gaming, photography, retro, skincare, urban, wedding) — still
-  picsum.photos placeholders. (8 projects already use real mockups in `assets/images/`.)
+- **Remaining real assets:** profile photo and certificate screenshots — still picsum.photos
+  placeholders. (All 15 projects now use real mockups in `assets/images/`.)
 - **Testing:** Lighthouse audit (target 90+) and cross-browser testing not yet run.
   *(Deployment itself is done — see §9.)*
 - **Repo files:** `assets/pdfs/` from `file system.txt` does not exist yet.
