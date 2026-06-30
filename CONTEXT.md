@@ -29,9 +29,10 @@ For the original requirements, see `PROMPT.md` and `spec.md`; for the roadmap, s
 - **Font Awesome 6.5.1** — via CDN, for GitHub/LinkedIn/UI icons.
 - **Logo/favicon** — `assets/logo.svg` (the chosen "Terminal" logo) wired as the SVG favicon on
   every page and reused as the footer brand mark.
-- **Images** — real project mockups in `assets/images/` (all 15 projects); picsum.photos
-  placeholders (`https://picsum.photos/seed/{seed}/...`) still used only for the certificates and
-  the profile photo.
+- **Images** — real project mockups in `assets/images/` (all 15 projects), compressed via the
+  TinyPNG/Tinify API (PNG screenshots converted to JPEG; ~17 MB → ~2.3 MB, 86% smaller).
+  picsum.photos placeholders (`https://picsum.photos/seed/{seed}/...`) still used only for the
+  certificates and the profile photo.
 
 No build step, no dependencies — open the HTML files in a browser (or via a static server) to run.
 
@@ -53,7 +54,8 @@ portflio_web3/
 │   ├── images/         # Real project mockups (18 files covering all 15 projects)
 │   └── logo.svg        # Site logo / SVG favicon (the chosen "Terminal" logo)
 ├── netlify.toml        # Netlify config (static root publish, no build step)
-├── .gitignore          # Excludes junk, .netlify/, local agent tooling
+├── .gitignore          # Excludes junk, .netlify/, local agent tooling, secrets
+├── CLAUDE.md           # Claude Code guidance (esp. never commit secrets/API keys)
 ├── README.md           # Project readme (live links)
 ├── PROMPT.md           # Original build prompt
 ├── spec.md             # Detailed product spec
@@ -70,12 +72,12 @@ portflio_web3/
 > part of the site.
 
 ### `assets/images/` contents
-Real mockups for all 15 projects (most filenames match each project's `seed`, with a few
-spelling variants referenced explicitly via the `images:` array):
-`bakery_web1.png`, `health_web1.jpg`, `industrial_web1.png`, `jewelry_web1.jpg`, `lawyer_web1.jpg`,
-`tech_web1.jpg`, `gaming-mockup.jpg`, `bahurrus_web1.png` (Bauhaus), `neural_link1.png` (NEURAL_LINK),
-`botanical_web1.png` (AURELIA Botanicals), `urban_web1.png`, `archieve_web1.png` (ARCHIVE.01),
-`ethernal_web1.png` (Ethereal Events), plus multi-image sets `kids_web1-1/2/3.jpg` (3) and
+Real mockups for all 15 projects — **all compressed JPEGs** (most filenames match each project's
+`seed`, with a few spelling variants referenced explicitly via the `images:` array):
+`bakery_web1.jpg`, `health_web1.jpg`, `industrial_web1.jpg`, `jewelry_web1.jpg`, `lawyer_web1.jpg`,
+`tech_web1.jpg`, `gaming-mockup.jpg`, `bahurrus_web1.jpg` (Bauhaus), `neural_link1.jpg` (NEURAL_LINK),
+`botanical_web1.jpg` (AURELIA Botanicals), `urban_web1.jpg`, `archieve_web1.jpg` (ARCHIVE.01),
+`ethernal_web1.jpg` (Ethereal Events), plus multi-image sets `kids_web1-1/2/3.jpg` (3) and
 `travel_web1-1/2.jpg` (2).
 
 ---
@@ -264,6 +266,12 @@ shared script is safe on every page.
 - **Inline links are underlined** (`.section__lead a`, `.info-table a`) so they don't rely on color
   alone — satisfies WCAG 1.4.1 ("Links rely on color to be distinguishable"). Nav links, buttons,
   and footer icon buttons stay underline-free since they're already visually distinct.
+
+### Performance
+- **Images compressed** via TinyPNG/Tinify (~17 MB → ~2.3 MB, 86% smaller); PNG screenshots
+  converted to JPEG. This is the main Lighthouse-performance lever for this image-heavy site.
+- **No dead CSS/JS:** an audit confirmed all 104 CSS class selectors, both `@keyframes`, and all
+  15 JS functions are referenced — nothing to strip. CSS is ~27 KB (6.3 KB gz); JS ~32 KB (10 KB gz).
 
 ---
 

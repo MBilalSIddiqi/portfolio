@@ -19,6 +19,12 @@ Thumbs.db
 .agents/
 skills-lock.json
 
+# Secrets — never commit API keys/tokens (e.g. TinyPNG/Tinify key)
+.env
+.env.*
+*.key
+secrets*
+
 # Logo concept candidates + comparison page — kept locally for reference,
 # but only assets/logo.svg (the chosen "Terminal" logo) ships with the site.
 assets/logos/

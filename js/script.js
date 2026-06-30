@@ -123,14 +123,14 @@
      2. DATA  (placeholder content — Bilal replaces later)
      ----------------------------------------------------- */
   // Real demo websites — all live on GitHub Pages.
-  // Images use picsum placeholders seeded per project; swap for real
-  // screenshots later (e.g. assets/images/<seed>.png).
+  // Each project uses a real compressed screenshot in assets/images/
+  // (referenced via its images[] array); picsum is only a fallback.
   const PROJECTS = [
     {
       title: "Cozy Crumbs Bakery",
       tag: "Food & Hospitality",
       seed: "bakery_web1",
-      images: ["assets/images/bakery_web1.png"],
+      images: ["assets/images/bakery_web1.jpg"],
       live: "https://mbilalsiddiqi.github.io/bakery_web1/",
       desc: "A warm, artisan bakery site — \"baked fresh, every single morning.\"",
       detail:
@@ -140,7 +140,7 @@
       title: "Bauhaus Design Collective",
       tag: "Design & Art",
       seed: "bauhaus_web1",
-      images: ["assets/images/bahurrus_web1.png"],
+      images: ["assets/images/bahurrus_web1.jpg"],
       live: "https://mbilalsiddiqi.github.io/bauhaus_web1/",
       desc: "A bold Bauhaus-inspired site with geometric shapes and primary colors.",
       detail:
@@ -170,7 +170,7 @@
       title: "Ironclad Industrial",
       tag: "Industrial & Corporate",
       seed: "industrial_web1",
-      images: ["assets/images/industrial_web1.png"],
+      images: ["assets/images/industrial_web1.jpg"],
       live: "https://mbilalsiddiqi.github.io/industrial_web1/",
       desc: "A brutalist heavy-manufacturing & infrastructure company site.",
       detail:
@@ -214,7 +214,7 @@
       title: "ARCHIVE.01 Studio",
       tag: "Photography & Portfolio",
       seed: "photography_web1",
-      images: ["assets/images/archieve_web1.png"],
+      images: ["assets/images/archieve_web1.jpg"],
       live: "https://mbilalsiddiqi.github.io/photography_web1/",
       desc: "A Swiss-style monochrome photography studio portfolio.",
       detail:
@@ -224,7 +224,7 @@
       title: "NEURAL_LINK",
       tag: "Creative & Experimental",
       seed: "retro_web1",
-      images: ["assets/images/neural_link1.png"],
+      images: ["assets/images/neural_link1.jpg"],
       live: "https://mbilalsiddiqi.github.io/retro_web1/",
       desc: "A retro-futuristic cyberpunk terminal interface.",
       detail:
@@ -234,7 +234,7 @@
       title: "AURELIA Botanicals",
       tag: "Beauty & E-commerce",
       seed: "skincare_web1",
-      images: ["assets/images/botanical_web1.png"],
+      images: ["assets/images/botanical_web1.jpg"],
       live: "https://mbilalsiddiqi.github.io/skincare_web1/",
       desc: "A nature-luxury organic skincare line & catalog.",
       detail:
@@ -267,7 +267,7 @@
       title: "URBN_ZN",
       tag: "Fashion & Streetwear",
       seed: "urban_web1",
-      images: ["assets/images/urban_web1.png"],
+      images: ["assets/images/urban_web1.jpg"],
       live: "https://mbilalsiddiqi.github.io/urban_web1/",
       desc: "A brutalist underground streetwear & zine collective.",
       detail:
@@ -277,7 +277,7 @@
       title: "Ethereal Events",
       tag: "Events & Weddings",
       seed: "wedding_web1",
-      images: ["assets/images/ethernal_web1.png"],
+      images: ["assets/images/ethernal_web1.jpg"],
       live: "https://mbilalsiddiqi.github.io/wedding_web1/",
       desc: "A soft, pastel wedding & event planning service.",
       detail:
