@@ -120,6 +120,8 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
 - **Reduced-motion** support — animations/transitions disabled under
   `prefers-reduced-motion: reduce`.
 - Reusable button variants: `.btn--navy`, `.btn--white`, `.btn--blue`, `.btn--ghost`, `.btn--github`.
+- `.section__kicker` — an uppercase, letter-spaced blue eyebrow subheading (used under the Projects
+  H1 as "Demo Websites").
 - **Phase 6 polish (see §11)** added: tighter heading rhythm + `text-wrap` balancing, a fixed hero
   radial glow, `--edge-light` inner highlight on raised cards, scroll-reveal (`.reveal`/`.is-visible`),
   a CTA sheen sweep, hamburger→X + scroll-state header animations, and soft form focus rings.
@@ -186,9 +188,10 @@ Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow,
   my other repos` → https://github.com/MBilalSIddiqi (new tab).
 
 ### `projects.html`
-- H1 "My **Projects**". Empty `#projects-grid` populated by JS from the `PROJECTS` array
-  (15 real demo sites, each with a live GitHub Pages link — e.g. Cozy Crumbs Bakery, SleekGamer,
-  AURELIA Fine Jewelry, Sterling & Associates, Solis Escapes, KiddoCreative).
+- H1 "My **Projects**" with a "Demo Websites" **kicker** subheading below it (`.section__kicker` —
+  an uppercase, letter-spaced blue eyebrow). Empty `#projects-grid` populated by JS from the
+  `PROJECTS` array (15 real demo sites, each with a live GitHub Pages link — e.g. Cozy Crumbs
+  Bakery, SleekGamer, AURELIA Fine Jewelry, Sterling & Associates, Solis Escapes, KiddoCreative).
 - Each card (image + tag + title + description) opens a **modal** with the larger image, full
   detail text, and a "Visit live site" button.
 - **Images:** all 15 projects use real mockups from `assets/images/` (referenced via an
