@@ -10,6 +10,7 @@
   --navy: #1a2a4a;        /* headings */
   --blue: #2a6fdb;        /* accents / buttons / links */
   --blue-dark: #1f57ad;   /* button hover */
+  --link: #5b9bf5;        /* lighter blue for text links — meets 4.5:1 on dark bg */
   --navy-deep: #0d1117;   /* pricing section band */
   --green: #22c55e;       /* pricing feature checkmarks */
   --text: #ffffff;        /* primary text */
@@ -76,7 +77,7 @@ body {
 
 img { max-width: 100%; display: block; }
 
-a { color: var(--blue); text-decoration: none; transition: color var(--transition); }
+a { color: var(--link); text-decoration: none; transition: color var(--transition); }
 a:hover { color: var(--text); }
 
 /* Inline text links must not rely on color alone (WCAG 1.4.1) — underline
@@ -145,7 +146,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .section__kicker {
-  color: var(--blue);
+  color: var(--link);
   font-weight: 600;
   font-size: var(--fs-sm);
   letter-spacing: 0.18em;
@@ -377,25 +378,18 @@ ul { margin: 0; padding: 0; list-style: none; }
   width: 100%;
   margin-inline: auto;
   border-radius: 50% 50% 48% 52% / 52% 48% 52% 48%;
-  background: radial-gradient(circle at 30% 30%, var(--blue), var(--navy) 70%);
-  position: relative;
+  object-fit: cover;
   box-shadow: var(--shadow);
   animation: float 6s ease-in-out infinite;
-}
-.hero__art::after {
-  content: "</>";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: clamp(2.5rem, 8vw, 4rem);
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.9);
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__art { animation: none; }
 }
 
 .hero__title {
@@ -466,6 +460,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 .about__photo {
   width: 100%;
   max-width: 380px;
+  max-height: 320px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   margin-inline: auto;
   border-radius: var(--radius);
   border: 1px solid var(--border);
@@ -729,16 +726,24 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .sp-grid {
   display: grid;
-  gap: 1.2rem;
+  gap: 1.5rem;
   grid-template-columns: 1fr;
+  max-width: 860px;
+  margin-inline: auto;
 }
 .sp-card {
   background: var(--bg-alt);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.6rem;
+  padding: 2.5rem 2rem;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   color: var(--text);
+  text-decoration: none;
   box-shadow: var(--edge-light);
   transition: transform var(--transition), border-color var(--transition),
               box-shadow var(--transition);
@@ -749,12 +754,12 @@ ul { margin: 0; padding: 0; list-style: none; }
   box-shadow: var(--shadow), var(--edge-light);
 }
 .sp-card__icon {
-  font-size: 1.8rem;
+  font-size: 2.4rem;
   color: var(--blue);
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
 }
-.sp-card h3 { color: var(--text); }
-.sp-card p { color: var(--muted); margin: 0; font-size: 0.95rem; }
+.sp-card h3 { color: var(--text); font-size: 1.3rem; margin-bottom: 0.5rem; }
+.sp-card p { color: var(--muted); margin: 0; font-size: 1rem; line-height: 1.5; }
 
 .cta-center {
   display: flex;
@@ -771,7 +776,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 .btn--github:hover { background: var(--blue-dark); color: #fff; }
 
 @media (min-width: 600px) { .sp-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { .sp-grid { grid-template-columns: repeat(3, 1fr); } }
 
 /* ============================================================
    CARD GRID  (Projects + Certificates pages)
@@ -807,12 +811,12 @@ ul { margin: 0; padding: 0; list-style: none; }
 .card__img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
 .card__body { padding: 1.2rem 1.3rem 1.5rem; }
 .card__title { color: var(--text); margin-bottom: 0.35rem; }
-.card__meta { color: var(--blue); font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+.card__meta { color: var(--link); font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
 .card__desc { color: var(--muted); font-size: 0.95rem; margin: 0; }
 .card__hint {
   display: inline-block;
   margin-top: 0.9rem;
-  color: var(--blue);
+  color: var(--link);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -984,7 +988,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  color: var(--blue);
+  color: var(--link);
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;

@@ -17,7 +17,7 @@
   const NAV_LINKS = [
     { href: "index.html", label: "Home" },
     { href: "projects.html", label: "Projects" },
-    { href: "certificates.html", label: "Certificates" },
+    { href: "certificates.html", label: "Certifications" },
     { href: "contact.html", label: "Contact" },
   ];
 
@@ -287,36 +287,47 @@
 
   const CERTIFICATES = [
     {
-      title: "Python for Everybody",
-      issuer: "Coursera",
-      date: "2025",
-      img: "https://picsum.photos/seed/pythoncert/800/600",
+      title: "Python",
+      issuer: "Mimo",
+      date: "June 2026",
+      img: "assets/images/mimo-python.jpg",
       detail:
-        "A comprehensive introduction to programming with Python — covering data structures, web APIs, and databases. This specialisation built the strong Python foundation Bilal uses every day.",
+        "Completed the full Python track on Mimo — covering variables, control flow, functions, data structures, and object-oriented programming. This is the foundation behind the API tools and small apps Bilal builds.",
     },
     {
-      title: "Responsive Web Design",
-      issuer: "freeCodeCamp",
-      date: "2025",
-      img: "https://picsum.photos/seed/webcert/800/600",
+      title: "Python AI Development",
+      issuer: "Mimo",
+      date: "July 2026",
+      img: "assets/images/mimo-python-ai.jpg",
       detail:
-        "A hands-on certification covering HTML5, CSS3, Flexbox, Grid, and accessibility best practices — the backbone of every mobile-first site Bilal delivers.",
+        "A hands-on track applying Python to AI development — working with data, libraries, and the building blocks of modern AI-powered tools.",
+    },
+  ];
+
+  const SIDE_PROJECTS = [
+    {
+      title: "Weather Checker",
+      icon: "fa-cloud-sun",
+      desc: "A Python CLI that fetches live weather for any city via the OpenWeatherMap API.",
+      href: "https://github.com/MBilalSIddiqi/Beginner-Projects/blob/main/Weather_checker.py",
     },
     {
-      title: "JavaScript Algorithms & Data Structures",
-      issuer: "freeCodeCamp",
-      date: "2025",
-      img: "https://picsum.photos/seed/jscert/800/600",
-      detail:
-        "A deep dive into modern ES6+ JavaScript, algorithmic thinking, and data structures — sharpening the problem-solving skills behind every interactive feature.",
+      title: "Pokémon Stats Fetcher",
+      icon: "fa-bolt",
+      desc: "Looks up any Pokémon's stats from the PokéAPI and prints them to the terminal.",
+      href: "https://github.com/MBilalSIddiqi/Beginner-Projects/blob/main/pokemon_api.py",
     },
     {
-      title: "Git & GitHub Essentials",
-      issuer: "Coursera",
-      date: "2024",
-      img: "https://picsum.photos/seed/gitcert/800/600",
-      detail:
-        "Version control mastery: branching, merging, pull requests, and collaborative workflows that keep client projects organised and recoverable.",
+      title: "Login System",
+      icon: "fa-lock",
+      desc: "A username/password login flow guarded by a custom Python @login_required decorator.",
+      href: "https://github.com/MBilalSIddiqi/Beginner-Projects/blob/main/simple_login_program.py",
+    },
+    {
+      title: "Mini Ludo Game",
+      icon: "fa-dice",
+      desc: "A two-player dice race to 30 that saves match results to a file. First to the finish wins.",
+      href: "https://github.com/MBilalSIddiqi/Beginner-Projects/blob/main/Ludo_game.py",
     },
   ];
 
@@ -325,6 +336,25 @@
      ----------------------------------------------------- */
   let modalEl = null;
   let lastFocused = null;
+
+  const FOCUSABLE_SEL =
+    'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])';
+
+  // Toggle inert + aria-hidden on the top-level page regions while the modal
+  // is open, so background content can't be focused or read by screen readers.
+  function setBackgroundInert(on) {
+    ["site-header", "main", "site-footer"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (on) {
+        el.setAttribute("inert", "");
+        el.setAttribute("aria-hidden", "true");
+      } else {
+        el.removeAttribute("inert");
+        el.removeAttribute("aria-hidden");
+      }
+    });
+  }
 
   function ensureModal() {
     if (modalEl) return modalEl;
@@ -339,6 +369,31 @@
     modalEl.addEventListener("click", (e) => {
       if (e.target === modalEl) closeModal();
     });
+
+    // Focus trap: keep Tab / Shift+Tab cycling within the panel while open.
+    modalEl.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+      if (!modalEl.classList.contains("open")) return;
+      const panel = modalEl.querySelector(".modal__panel");
+      if (!panel) return;
+      const focusable = Array.prototype.filter.call(
+        panel.querySelectorAll(FOCUSABLE_SEL),
+        (el) => el.offsetParent !== null || el === document.activeElement
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first || !panel.contains(document.activeElement)) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
     return modalEl;
   }
 
@@ -352,9 +407,19 @@
       .querySelector(".modal__close")
       .addEventListener("click", closeModal);
 
+    // Label the dialog by its heading for assistive tech.
+    const heading = panel.querySelector("h2");
+    if (heading) {
+      if (!heading.id) heading.id = "modal-title";
+      modal.setAttribute("aria-labelledby", heading.id);
+    } else {
+      modal.removeAttribute("aria-labelledby");
+    }
+
     lastFocused = document.activeElement;
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
+    setBackgroundInert(true);
     panel.querySelector(".modal__close").focus();
   }
 
@@ -362,6 +427,7 @@
     if (!modalEl) return;
     modalEl.classList.remove("open");
     document.body.style.overflow = "";
+    setBackgroundInert(false);
     if (lastFocused && typeof lastFocused.focus === "function") {
       lastFocused.focus();
     }
@@ -479,6 +545,24 @@
             <p>${c.detail}</p>
           </div>`)
       );
+      grid.appendChild(card);
+    });
+  }
+
+  function renderSideProjects() {
+    const grid = document.getElementById("side-projects-grid");
+    if (!grid) return;
+
+    SIDE_PROJECTS.forEach((p) => {
+      const card = document.createElement("a");
+      card.className = "sp-card";
+      card.href = p.href;
+      card.target = "_blank";
+      card.rel = "noopener";
+      card.innerHTML = `
+        <div class="sp-card__icon"><i class="fas ${p.icon}"></i></div>
+        <h3>${p.title}</h3>
+        <p>${p.desc}</p>`;
       grid.appendChild(card);
     });
   }
@@ -857,6 +941,7 @@
     buildFooter();
     renderProjects();
     renderCertificates();
+    renderSideProjects();
     initPricingToggle();
     initContactForm();
     initScrollReveal();

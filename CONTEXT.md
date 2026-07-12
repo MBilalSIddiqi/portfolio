@@ -1,84 +1,82 @@
 # Project Context — What Has Been Built
 
-This document records everything currently implemented in the portfolio website for
-**Mohammad Bilal Siddiqui**. It is the source of truth for the *current state* of the codebase.
-For the original requirements, see `PROMPT.md` and `spec.md`; for the roadmap, see `TODO.md`.
+This document records the *current state* of the portfolio website for
+**Mohammad Bilal Siddiqui**. It is the source of truth for what exists today.
+For original requirements see `PROMPT.md` / `spec.md`; for the roadmap see `TODO.md`.
 
-> **Status:** Phases 1–3 complete (structure, styling, interactivity). Phase 4 nearly done —
-> real project images wired in for **all 15 of 15 projects** (`assets/images/`); only the
-> certificates and the profile photo still use picsum placeholders. Phase 5 deployment **done** —
-> the site is **live** on Netlify (primary, with GitHub continuous deployment) and GitHub Pages
-> (mirror). The contact form is wired to **Netlify Forms** (real backend). **Phase 6 (UI/UX global
-> polish) done** — typographic scale, depth/glow, scroll-reveal motion, animated nav/header,
-> restructured JS-injected footer, and soft form focus rings (see §11). Remaining: remaining real
-> assets and Lighthouse/cross-browser testing.
+> **Status:** Phases 1–6 complete (structure, styling, interactivity, real assets, deployment,
+> UI/UX polish). All 15 projects, both certificates, and the hero/OG image now use **real images**
+> — no picsum placeholders remain. A cross-persona UX audit (July 12, 2026) drove a round of fixes:
+> real content replaced all placeholders, the certificates page was renamed to "Certifications",
+> the tagline became "Fast, affordable websites", a WCAG `--link` contrast token was added, and the
+> modal gained a focus trap. Remaining: Lighthouse/cross-browser testing and a couple of small
+> audit items (see §10).
 
 > **Live URLs:**
-> - **Netlify (primary):** https://mbilalsiddiqi-portfolio.netlify.app/ — auto-deploys on every push to `main`.
-> - **GitHub Pages (mirror):** https://mbilalsiddiqi.github.io/portfolio/ — also rebuilds on push.
+> - **Netlify (primary):** https://mbilalsiddiqi-portfolio.netlify.app/ — auto-deploys on push to `main`.
+> - **GitHub Pages (mirror):** https://mbilalsiddiqi.github.io/portfolio/ — rebuilds on push.
 
 ---
 
 ## 1. Tech Stack
 
 - **HTML5** — semantic markup, no templating frameworks.
-- **CSS3** — hand-written, no Bootstrap/Tailwind. Uses CSS custom properties (variables),
-  Grid, Flexbox, `clamp()` fluid sizing, and media queries.
-- **Vanilla JavaScript (ES6+)** — single IIFE module, no libraries/frameworks.
-- **Google Fonts** — Inter (weights 400/500/600/800).
+- **CSS3** — hand-written (no Bootstrap/Tailwind); custom properties, Grid, Flexbox, `clamp()`
+  fluid sizing, media queries.
+- **Vanilla JavaScript (ES6+)** — single IIFE module, no libraries.
+- **Google Fonts** — Inter (400/500/600/800).
 - **Font Awesome 6.5.1** — via CDN, for GitHub/LinkedIn/UI icons.
-- **Logo/favicon** — `assets/logo.svg` (the chosen "Terminal" logo) wired as the SVG favicon on
-  every page and reused as the footer brand mark.
-- **Images** — real project mockups in `assets/images/` (all 15 projects), compressed via the
-  TinyPNG/Tinify API (PNG screenshots converted to JPEG; ~17 MB → ~2.3 MB, 86% smaller).
-  picsum.photos placeholders (`https://picsum.photos/seed/{seed}/...`) still used only for the
-  certificates and the profile photo.
+- **Logo/favicon** — `assets/logo.svg` (the "Terminal" logo), SVG favicon on every page + footer mark.
+- **Images** — real project mockups + profile/cert images in `assets/images/`, compressed via the
+  TinyPNG/Tinify API (PNG → JPEG; ~17 MB → ~2.3 MB, 86% smaller). No picsum placeholders remain.
 
-No build step, no dependencies — open the HTML files in a browser (or via a static server) to run.
+No build step, no dependencies — open the HTML files in a browser (or a static server) to run.
 
 ---
 
 ## 2. File Structure
 
 ```
-portflio_web3/
+portfolio_web3/
 ├── index.html          # Home page
 ├── projects.html       # Projects page (JS-populated grid + modals)
-├── certificates.html   # Certificates page — H1 "Website Demos" (JS-populated grid + modals)
+├── certificates.html   # Certifications page (JS-populated grid + modals)
 ├── contact.html        # Contact page (validated form + info table)
-├── css/
-│   └── style.css       # All global styles
-├── js/
-│   └── script.js       # All global interactivity
+├── css/style.css       # All global styles
+├── js/script.js        # All global interactivity + data arrays
 ├── assets/
-│   ├── images/         # Real project mockups (18 files covering all 15 projects)
-│   └── logo.svg        # Site logo / SVG favicon (the chosen "Terminal" logo)
+│   ├── images/         # Real project mockups, profile photo, cert scans (+ mimo-certificates/ source PDFs)
+│   └── logo.svg        # Site logo / SVG favicon
 ├── netlify.toml        # Netlify config (static root publish, no build step)
-├── .gitignore          # Excludes junk, .netlify/, local agent tooling, secrets
+├── robots.txt          # SEO — allows crawlers, points to sitemap
+├── sitemap.xml         # SEO — lists the 4 pages
+├── .gitignore          # Excludes junk, .netlify/, local tooling, secrets, Zone.Identifier files
 ├── CLAUDE.md           # Claude Code guidance (esp. never commit secrets/API keys)
-├── README.md           # Project readme (live links)
-├── PROMPT.md           # Original build prompt
-├── spec.md             # Detailed product spec
-├── TODO.md             # Roadmap / checklist
-├── CONTEXT.md          # This file
-└── file system.txt     # Intended file tree reference
+├── README.md · PROMPT.md · spec.md · TODO.md · CONTEXT.md   # Docs
+└── file system.txt     # Intended file-tree reference
 ```
 
-> Note: `assets/images/` exists with real project mockups; `README.md` and `netlify.toml` now exist.
-> `assets/pdfs/` from `file system.txt` is **not yet created**. Only the certificates and the profile
-> photo still use picsum.photos placeholders. `assets/logo.svg` ships as the favicon; the four
-> logo concept candidates (`assets/logos/`) and `logo-preview.html` are kept locally but gitignored.
-> Untracked local tooling (`.agents/`, `skills-lock.json`, `.netlify/`) is also gitignored and not
-> part of the site.
+> Locally-present but **gitignored** (not part of the site): `assets/logos/` + `logo-preview.html`
+> (logo concept candidates), `.agents/`, `skills-lock.json`, `.netlify/`, `details.txt`, and all
+> `*:Zone.Identifier` files. `improvements.md` (the security + UX audit) is untracked.
 
 ### `assets/images/` contents
-Real mockups for all 15 projects — **all compressed JPEGs** (most filenames match each project's
-`seed`, with a few spelling variants referenced explicitly via the `images:` array):
-`bakery_web1.jpg`, `health_web1.jpg`, `industrial_web1.jpg`, `jewelry_web1.jpg`, `lawyer_web1.jpg`,
-`tech_web1.jpg`, `gaming-mockup.jpg`, `bahurrus_web1.jpg` (Bauhaus), `neural_link1.jpg` (NEURAL_LINK),
-`botanical_web1.jpg` (AURELIA Botanicals), `urban_web1.jpg`, `archieve_web1.jpg` (ARCHIVE.01),
-`ethernal_web1.jpg` (Ethereal Events), plus multi-image sets `kids_web1-1/2/3.jpg` (3) and
-`travel_web1-1/2.jpg` (2).
+Real, compressed JPEGs for all 15 projects (most filenames match each project's `seed`, some
+spelling variants referenced explicitly via each project's `images:` array):
+`archieve_web1` (ARCHIVE.01), `bahurrus_web1` (Bauhaus), `bakery_web1`, `botanical_web1` (AURELIA
+Botanicals), `ethernal_web1` (Ethereal Events), `gaming-mockup`, `health_web1`, `industrial_web1`,
+`jewelry_web1`, `lawyer_web1`, `neural_link1` (NEURAL_LINK), `tech_web1`, `urban_web1`, plus
+multi-image sets `kids_web1-1/2/3` (3) and `travel_web1-1/2` (2).
+
+Plus real profile/credential images:
+- `mypic1by1new.png` — About-section profile photo (1254×1254).
+- `bilal-hero.jpg` — hero art + Open Graph share image (900×900).
+- `mimo-python.jpg`, `mimo-python-ai.jpg` — the two real Mimo certificate scans.
+- `mimo-certificates/` — the source PDFs (`mimo-certificates-125.pdf` = Python,
+  `mimo-certificates-226.pdf` = Python AI Development) the cert JPEGs were rendered from.
+
+> Unused display images (`bilal-about.jpg`, `mypicfull.png`, `mypictrustshot.png`) were **deleted**
+> — nothing references them.
 
 ---
 
@@ -90,198 +88,168 @@ Real mockups for all 15 projects — **all compressed JPEGs** (most filenames ma
 | `--bg` | `#0a0a0a` | Page background (black) |
 | `--bg-alt` | `#111418` | Raised surfaces / cards |
 | `--navy` | `#1a2a4a` | Headings token |
-| `--blue` | `#2a6fdb` | Accents, buttons, links |
+| `--blue` | `#2a6fdb` | Accents, buttons |
 | `--blue-dark` | `#1f57ad` | Button hover |
-| `--text` | `#ffffff` | Primary text |
-| `--text-soft` | `#e0e0e0` | Body text |
-| `--muted` | `#9aa3b2` | Low-emphasis text |
+| `--link` | `#5b9bf5` | **Lighter blue for text links — meets WCAG 4.5:1 on dark bg** |
+| `--text` / `--text-soft` / `--muted` | `#ffffff` / `#e0e0e0` / `#9aa3b2` | Text tiers |
 | `--border` | `#232a36` | Hairline borders |
 | `--navy-deep` | `#0d1117` | Pricing section band |
-| `--green` | `#22c55e` | Pricing feature checkmarks, discount accents |
+| `--green` | `#22c55e` | Pricing checkmarks, discount accents |
 
-Other tokens: radii, max content width (`--max: 1180px`), fluid `--gap`, shadow, transition.
+Other tokens: radii, max width (`--max: 1180px`), fluid `--gap`, shadow, transition.
 
-### Phase 6 polish tokens (`:root`)
-| Variable | Value | Use |
-|----------|-------|-----|
-| `--ease` | `cubic-bezier(0.22, 1, 0.36, 1)` | Springy ease-out for all motion |
-| `--transition` | `0.25s var(--ease)` | Shared transition shorthand |
-| `--border-hover` | `#3a4660` | Second-tier (hover) border color |
-| `--edge-light` | `inset 0 1px 0 rgba(255,255,255,0.04)` | Inner top highlight on raised cards |
-| `--space-1`…`--space-6` | `0.25rem`→`2.5rem` | Spacing scale |
-| `--fs-sm` / `--fs-base` / `--fs-lg` | `0.9` / `1` / `1.25rem` | Type scale |
+### Phase 6 polish tokens
+`--ease` (springy `cubic-bezier(0.22,1,0.36,1)`), `--transition` (`0.25s var(--ease)`),
+`--border-hover` (`#3a4660`), `--edge-light` (inner top highlight on raised cards),
+`--space-1…6` spacing scale, `--fs-sm/base/lg` type scale.
 
 ### Notable styling decisions
-- **Section titles render in white with a blue accent word** (e.g. "About <span>Me</span>"),
-  not pure navy. Pure navy on a black background fails contrast, so navy is kept as a token while
-  headings stay readable/accessible. The `--navy` color is still used per spec intent.
-- **Mobile-first** — base styles target mobile; breakpoints at ~600px, ~760px (nav), ~820px,
-  ~900–920px progressively enhance to tablet/desktop layouts.
-- **Reduced-motion** support — animations/transitions disabled under
-  `prefers-reduced-motion: reduce`.
-- Reusable button variants: `.btn--navy`, `.btn--white`, `.btn--blue`, `.btn--ghost`, `.btn--github`.
-- `.section__kicker` — an uppercase, letter-spaced blue eyebrow subheading (used under the Projects
-  H1 as "Demo Websites").
-- **Phase 6 polish (see §11)** added: tighter heading rhythm + `text-wrap` balancing, a fixed hero
-  radial glow, `--edge-light` inner highlight on raised cards, scroll-reveal (`.reveal`/`.is-visible`),
-  a CTA sheen sweep, hamburger→X + scroll-state header animations, and soft form focus rings.
+- **Section titles render white with a blue accent word** (e.g. "About <span>Me</span>"). Pure navy
+  on black fails contrast, so `--navy` stays a token while headings stay readable.
+- **Text links use the lighter `--link` token** (`a`, `.section__lead a`, `.card__meta`,
+  `.card__hint`, `.section__kicker`, `.info-row__label`) so accent text clears WCAG 1.4.3 contrast.
+- **Mobile-first** — base = mobile; breakpoints ~600 / ~760 (nav) / ~820 / ~900–920px enhance up.
+- **Reduced-motion** — animations/transitions disabled under `prefers-reduced-motion: reduce`.
+- Button variants: `.btn--navy`, `.btn--white`, `.btn--blue`, `.btn--ghost`, `.btn--github`.
+- `.section__kicker` — uppercase, letter-spaced blue eyebrow (used under the Projects H1).
+- Phase 6 polish (§11): tighter heading rhythm + `text-wrap` balance, fixed hero radial glow,
+  `--edge-light` on raised cards, scroll-reveal, CTA sheen sweep, hamburger→X + scroll-state header,
+  soft form focus rings.
 
 ---
 
 ## 4. Shared Components
 
 ### Navigation (JS-injected)
-- Defined once in `js/script.js` (`NAV_LINKS`) and injected into `<header id="site-header">` on
-  every page — single source of truth.
-- Sticky, blurred header with brand "Bilal.dev", links: Home, Projects, Certificates, Contact.
-- **Active page highlighting** — `setActiveNav()` compares the current filename to each link's
-  href and adds `.active` (underline accent) + `aria-current="page"`.
-- **Mobile hamburger** — toggle button shows/hides the nav list under 760px; closes on link tap.
-- *Requires JavaScript enabled to render the nav.*
+- Defined once in `js/script.js` (`NAV_LINKS`), injected into `<header id="site-header">` on every
+  page — single source of truth. Sticky, blurred header, brand "Bilal.dev", links: Home, Projects,
+  Certificates, Contact.
+- `setActiveNav()` adds `.active` (underline) + `aria-current="page"` to the current page's link.
+- **Mobile hamburger** toggles the nav list under 760px; closes on link tap; animates into an X.
+- *Requires JavaScript to render.*
 
-### Footer (JS-injected — Phase 6)
-- Defined once in `js/script.js` (`buildFooter()`) and injected into `<footer id="site-footer">` on
-  every page — single source of truth, reuses the shared `NAV_LINKS` array.
-- Three-part layout (3-column left-aligned at ≥760px, stacked on mobile):
-  1. **Brand + tagline** — "Bilal.dev" + "Building websites tailored for your needs — so you don't
-     have to be tech-savvy to manage them."
-  2. **Quick nav** — the same Home / Projects / Certificates / Contact links.
-  3. **Social icons** — circular 42px icon buttons (GitHub, LinkedIn, Email) with edge-light +
-     translateY(-3px) hover.
-- A `.footer__bottom` bar carries the copyright "© 2026 Mohammad Bilal Siddiqui. All rights reserved."
-- *Like the nav, the footer now requires JavaScript enabled to render.*
+### Footer (JS-injected)
+- Defined once (`buildFooter()`), injected into `<footer id="site-footer">`, reuses `NAV_LINKS`.
+- 3-part layout (3-col ≥760px, stacked mobile): **brand + tagline**, **quick nav**, **social icons**
+  (circular 42px GitHub / LinkedIn / Email buttons). A `.footer__bottom` bar carries the copyright.
+- *Also requires JavaScript to render (intentional DRY trade-off — one definition, not four copies).*
 
-### Modal system (reusable)
-- `openModal(html)` / `closeModal()` in `js/script.js`. One modal element is created on demand
-  and reused.
-- Closes via: **X button**, **click-outside** (overlay click), and **Escape key**.
-- Accessible: `role="dialog"`, `aria-modal`, focus moves to close button on open and returns to
-  the trigger on close; body scroll locked while open.
+### Modal system (reusable + focus-trapped)
+- `openModal(html)` / `closeModal()` — one modal element created on demand and reused.
+- Closes via **X button**, **click-outside**, and **Escape**.
+- Accessible: `role="dialog"`, `aria-modal`, `aria-labelledby` wired to the modal heading; focus
+  moves to close button on open and returns to the trigger on close; **Tab is trapped** within the
+  panel (cycles first↔last focusable); background page regions get `inert` + `aria-hidden`; body
+  scroll locked while open.
 
 ---
 
 ## 5. Pages
 
 ### `index.html` (Home)
-- **Hero** — split grid: animated abstract `</>` blob (left at desktop) + text (right). Headline
-  "Building Websites **tailored** for your needs" (bold + italic, accent word in blue). The
-  sub-headline is a **typing animation** (`initHeroTyping`) that cycles type → pause → delete
-  through 4 phrases ("Fast delivery. Affordable rates.", "Clean, modern UI on every project.",
-  "Built for Pakistani businesses.", "No-tech maintenance, always.") with a CSS-blinking cursor;
-  under reduced-motion it shows the first phrase statically. Two buttons: **Get in Touch** (navy)
-  and **See my work** (white). Stats: **15+ Example Websites**, **2 Websites under construction**.
-- **About Me** — split layout. **Paragraph/bio on the LEFT, profile photo on the RIGHT** (desktop;
-  stacks on mobile). Bio written from `spec.md` (17yo self-taught Python dev, Context Engineering,
-  value-prop checklist).
-- **Quote band** — full-width black section: *"I build websites that my clients don't need to be
-  tech-savvy to manage."*
-- **Demo showcase** — 1 large card + 2 stacked smaller cards (CSS Grid), linking to projects.
-- **Pricing** — dark-navy band (`--navy-deep`) with three tiers (Starter, Popular, Business),
-  the middle one highlighted with a "Most Popular" badge. Each card lists features (green
-  checkmarks) and a CTA that links to `contact.html?plan=<Tier>`, which prefills the contact
-  message. An **early-bird 50% discount** shows the struck-through original price next to the
-  discounted amount and a "50% OFF" pill. A **USD/PKR currency toggle** (`#currency-toggle`)
-  switches every price between USD and a hardcoded PKR equivalent (~280 PKR/USD, stored in
-  `data-usd`/`data-pkr` attributes).
-- **Side Projects** — 6-card grid (1 col mobile → 2 tablet → 3 desktop), each with a Font Awesome
-  icon, "Side Project 1–6". Centered rounded **GitHub CTA**: `<i class="fab fa-github"></i> Explore
-  my other repos` → https://github.com/MBilalSIddiqi (new tab).
+- **Hero** — split grid: real `bilal-hero.jpg` (left desktop) + text (right). Headline "Building
+  Websites **tailored** for your needs"; static sub-headline **"Fast, affordable websites"**. Two
+  buttons: **Get in Touch** (navy), **See my work** (white). Stats: **15+ Example Websites**,
+  **2 Websites under construction**.
+- **About Me** — split: bio LEFT, profile photo (`mypic1by1new.png`) RIGHT (stacks on mobile).
+  Bio: 17yo self-taught Python dev, Context Engineering, value-prop checklist.
+- **Quote band** — *"I build websites that my clients don't need to be tech-savvy to manage."*
+- **Demo showcase** — 1 large + 2 smaller cards (Grid) using real project images, linking to projects.
+- **Pricing** — dark-navy band, three tiers (Starter / Popular / Business), middle highlighted with
+  a "Most Popular" badge. Green-checkmark features; CTA links to `contact.html?plan=<Tier>` (prefills
+  the message). **Early-bird 50% off** shows struck-through original + "50% OFF" pill. A **USD/PKR
+  toggle** (`#currency-toggle`) switches every price (~280 PKR/USD, via `data-usd`/`data-pkr`).
+- **Side Projects** — grid (1→2→3 cols) of **4 real beginner Python projects** from the
+  `Beginner-Projects` GitHub repo: **Weather Checker** (OpenWeatherMap API), **Pokémon Stats
+  Fetcher** (PokéAPI), **Login System**, **Mini Ludo Game** — each an icon card linking to its
+  source file. Centered **GitHub CTA** → https://github.com/MBilalSIddiqi (new tab).
 
 ### `projects.html`
-- H1 "My **Projects**" with a "Demo Websites" **kicker** subheading below it (`.section__kicker` —
-  an uppercase, letter-spaced blue eyebrow). Empty `#projects-grid` populated by JS from the
-  `PROJECTS` array (15 real demo sites, each with a live GitHub Pages link — e.g. Cozy Crumbs
-  Bakery, SleekGamer, AURELIA Fine Jewelry, Sterling & Associates, Solis Escapes, KiddoCreative).
-- Each card (image + tag + title + description) opens a **modal** with the larger image, full
-  detail text, and a "Visit live site" button.
-- **Images:** all 15 projects use real mockups from `assets/images/` (referenced via an
-  `images: [...]` array on each project object). The picsum fallback in `renderProjects()` remains
-  as a safety net but is no longer triggered by any project.
-- **Carousel:** projects with more than one image (travel = 2, kids = 3) render a multi-image
-  carousel inside the modal — prev/next arrows + dots, index wraps around. Single-image projects
-  show a plain `<img>` (no carousel).
+- H1 "My **Projects**" + a "Demo Websites" **kicker** (`.section__kicker`). Empty `#projects-grid`
+  populated by JS from the `PROJECTS` array (15 real demo sites, each with a live GitHub Pages link).
+- Each card (image + tag + title + description) opens a **modal** with the larger image, full detail,
+  and a "Visit live site" button.
+- **Images:** all 15 use real mockups (via each project's `images: [...]` array). The picsum fallback
+  in `renderProjects()` remains only as an untriggered safety net.
+- **Carousel:** projects with >1 image (travel = 2, kids = 3) render a prev/next + dots carousel in
+  the modal (wrapping index); single-image projects show a plain `<img>`.
 
 ### `certificates.html`
-- H1 "Website **Demos**" (per spec — this is the certificates page).
-- Empty `#certs-grid` populated by JS from the `CERTIFICATES` array (4 items: Python for Everybody /
-  Coursera, Responsive Web Design / freeCodeCamp, JavaScript Algorithms & Data Structures /
-  freeCodeCamp, Git & GitHub Essentials / Coursera).
-- Each card shows Course Name, Issuer, Date and opens a **modal** with a certificate screenshot
-  (placeholder) + course summary.
+- Title / OG title / H1 all say **"Certifications"** (`Certi<span>fications</span>`).
+- Empty `#certs-grid` populated by JS from the `CERTIFICATES` array — **2 real Mimo certificates**:
+  **Python** (Mimo, June 2026) and **Python AI Development** (Mimo, July 2026).
+- Each card shows Title, Issuer, Date and opens a **modal** with the real certificate scan
+  (`assets/images/mimo-python.jpg` / `mimo-python-ai.jpg`) + a summary.
 
 ### `contact.html`
-- H1 "Let's **Talk**" + lead "I'm always looking for conversations with people building websites
-  for people."
+- H1 "Let's **Talk**" + lead intro.
 - Two-column layout:
-  - **Left — contact form**: Name, Email, Message, Send button. Wired to **Netlify Forms** —
-    `data-netlify="true"`, hidden `form-name`, and a `bot-field` honeypot. After inline validation
-    passes, JS AJAX-POSTs to Netlify (stays on-page) and shows the success/fallback message.
-    *(Submissions are captured only on the Netlify host, not the GitHub Pages mirror.)*
-    If the page is opened with a `?plan=<Starter|Popular|Business>` query param (from a pricing
-    CTA), JS prefills the message textarea with an enquiry for that package.
-  - **Right — info table** (4 rows):
-    1. **Email:** bilalseo009@gmail.com (mailto)
-    2. **LinkedIn:** Muhammad Bilal → https://www.linkedin.com/in/muhammad-bilal-siddiqui-11299229a/ (new tab)
-    3. **GitHub:** MBilalSIddiqi → https://github.com/MBilalSIddiqi (new tab)
-    4. **Location:** Planet Earth
+  - **Left — contact form**: Name, Email, Message, Send. Wired to **Netlify Forms**
+    (`data-netlify="true"`, hidden `form-name`, `bot-field` honeypot). After inline validation, JS
+    AJAX-POSTs to Netlify (stays on-page) and shows success/fallback. *(Submissions captured only on
+    the Netlify host, not the GitHub Pages mirror.)* A `?plan=<Starter|Popular|Business>` query param
+    prefills the message.
+  - **Right — info table**: Email (bilalseo009@gmail.com), LinkedIn, GitHub (MBilalSIddiqi), and
+    Location (**"Planet Earth"** — still a placeholder; see §10).
 
 ---
 
 ## 6. JavaScript Behavior (`js/script.js`)
 
-Single IIFE, all wired on `DOMContentLoaded`. Each feature guards on element existence so the one
-shared script is safe on every page.
+Single IIFE, wired on `DOMContentLoaded`. Each feature guards on element existence so the one shared
+script is safe on every page.
 
 | Function | Responsibility |
 |----------|----------------|
-| `buildNav()` | Inject shared nav into `#site-header`, wire mobile toggle + hamburger→X + scroll-state `.is-scrolled` shadow |
-| `buildFooter()` | Inject shared 3-part footer (brand+tagline / quick nav / social icons) into `#site-footer`, reusing `NAV_LINKS` |
-| `setActiveNav()` | Add `.active` / `aria-current` to the current page's link |
-| `initScrollReveal()` | IntersectionObserver scroll-reveal — adds `.reveal`→`.is-visible` as elements enter view; instant-show fallback under reduced-motion / no IO support |
-| `initHeroTyping()` | Hero sub-headline typing animation — cycles 4 phrases (type/pause/delete) with a CSS-blinking `.type-cursor`; shows the first phrase statically under reduced-motion |
-| `initShapesCanvas()` | Injects a fixed full-page `<canvas>` (`z-index: -1`, `pointer-events: none`) of ~22 drifting/rotating outline shapes (10 on <768px); pauses on tab-hidden via Page Visibility API; skipped entirely under reduced-motion |
-| `ensureModal()` / `openModal()` / `closeModal()` | Reusable modal with X / outside-click / Esc |
-| `renderProjects()` | Build project cards from `PROJECTS`, wire modal on click; uses `images[]` (real) with picsum fallback, renders carousel when >1 image |
-| `buildCarousel()` / `wireCarousel()` | Build + wire the multi-image modal carousel (prev/next/dots, wrapping index) |
-| `renderCertificates()` | Build certificate cards from `CERTIFICATES`, wire modal on click |
-| `initContactForm()` | Validate Name/Email/Message (required + email regex), per-field errors; on success AJAX-POST to Netlify Forms with inline success/fallback message + disabled-while-sending button; prefills message from a `?plan=` query param |
-| `initPricingToggle()` | Toggle every `[data-usd][data-pkr]` price between USD and PKR; updates the active state + `aria-pressed` on `#currency-toggle` |
+| `buildNav()` | Inject shared nav; wire mobile toggle + hamburger→X + `.is-scrolled` shadow |
+| `buildFooter()` | Inject shared 3-part footer, reusing `NAV_LINKS` |
+| `setActiveNav()` | `.active` / `aria-current` on the current page's link |
+| `initScrollReveal()` | IntersectionObserver reveal (`.reveal`→`.is-visible`); instant-show fallback |
+| `initHeroTyping()` | *(present)* hero sub-headline helper; hero currently shows a static tagline |
+| `initShapesCanvas()` | Fixed full-page `<canvas>` of drifting outline shapes; pauses on tab-hidden; skipped under reduced-motion |
+| `ensureModal()` / `openModal()` / `closeModal()` | Reusable focus-trapped modal (X / outside / Esc, `inert`, `aria-labelledby`) |
+| `renderProjects()` | Build project cards from `PROJECTS`; modal + carousel when >1 image |
+| `buildCarousel()` / `wireCarousel()` | Build + wire the multi-image modal carousel |
+| `renderCertificates()` | Build certificate cards from `CERTIFICATES` |
+| `renderSideProjects()` | Build the 4 side-project cards from `SIDE_PROJECTS` |
+| `initContactForm()` | Validate Name/Email/Message; AJAX-POST to Netlify Forms; prefill from `?plan=` |
+| `initPricingToggle()` | Toggle every `[data-usd][data-pkr]` price USD↔PKR; update `aria-pressed` |
 
-- **Data arrays** `PROJECTS` (15) and `CERTIFICATES` (4) hold all card content — easy to edit/extend.
-  Matched projects carry an optional `images: ["assets/images/..."]` array; unmatched ones omit it
-  and fall back to `https://picsum.photos/seed/${seed}/800/600`.
-- **Form validation + submission**: blocks submit on empty fields or invalid email (regex
-  `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`), shows inline `.form-error` messages + an `alert`. On success it
-  AJAX-POSTs the form data to Netlify Forms (`fetch("/")`, url-encoded), resets the form, and shows
-  a friendly confirmation; on a failed POST (e.g. the GitHub Pages mirror, which has no backend) it
-  shows a fallback pointing to the email address. The Send button is disabled while sending.
-- **Smooth scrolling**: handled via CSS `scroll-behavior: smooth`.
+- **Data arrays** hold all card content — easy to edit/extend: `PROJECTS` (15), `CERTIFICATES` (2),
+  `SIDE_PROJECTS` (4). Matched projects carry an `images: ["assets/images/..."]` array; unmatched
+  fall back to picsum (none currently do).
+- **Form validation + submission**: blocks on empty fields / invalid email
+  (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`), shows inline `.form-error` messages. On success, AJAX-POSTs
+  url-encoded data to Netlify Forms (`fetch("/")`), resets, and confirms; on failed POST (e.g. the
+  GitHub Pages mirror) shows a fallback pointing to the email. Send button disabled while sending.
+- **Smooth scrolling** via CSS `scroll-behavior: smooth`.
 
 ---
 
 ## 7. Accessibility & SEO
 
 - Semantic landmarks (`<header>`, `<main>`, `<section>`, `<footer>`), skip-to-content link.
-- ARIA: nav `aria-label`, modal `role="dialog"`/`aria-modal`, form errors `role="alert"`,
-  status `aria-live="polite"`, `:focus-visible` outlines.
-- Per-page `<title>`, meta description, and Open Graph tags.
+- ARIA: nav `aria-label`, modal `role="dialog"`/`aria-modal`/`aria-labelledby` + focus trap + `inert`
+  background, form errors `role="alert"`, status `aria-live="polite"`, `:focus-visible` outlines.
+- **Lighter `--link` token** clears WCAG 1.4.3 contrast for all accent text links.
+- Per-page `<title>`, meta description, Open Graph tags (real `bilal-hero.jpg` share image).
 - `loading="lazy"` on below-the-fold images; explicit width/height on the profile image.
-- **Inline links are underlined** (`.section__lead a`, `.info-table a`) so they don't rely on color
-  alone — satisfies WCAG 1.4.1 ("Links rely on color to be distinguishable"). Nav links, buttons,
-  and footer icon buttons stay underline-free since they're already visually distinct.
+- **Inline links underlined** (`.section__lead a`, `.info-table a`) so they don't rely on color alone
+  (WCAG 1.4.1). Nav links, buttons, footer icons stay underline-free (already visually distinct).
+- **SEO files:** `robots.txt` (allows crawlers, points to the sitemap) and `sitemap.xml` (the 4 pages).
 
 ### Performance
-- **Images compressed** via TinyPNG/Tinify (~17 MB → ~2.3 MB, 86% smaller); PNG screenshots
-  converted to JPEG. This is the main Lighthouse-performance lever for this image-heavy site.
-- **No dead CSS/JS:** an audit confirmed all 104 CSS class selectors, both `@keyframes`, and all
-  15 JS functions are referenced — nothing to strip. CSS is ~27 KB (6.3 KB gz); JS ~32 KB (10 KB gz).
+- **Images compressed** via TinyPNG/Tinify (~17 MB → ~2.3 MB, 86% smaller); PNG → JPEG. Main
+  Lighthouse-performance lever for this image-heavy site.
+- **No dead CSS/JS** per audit — all class selectors, keyframes, and JS functions referenced.
+  CSS ~27 KB (6.3 KB gz); JS ~32 KB (10 KB gz).
 
 ---
 
 ## 8. How to Run
 
 ```bash
-cd /home/bilal/all_web/portflio_web3
+cd /home/bilal/all_web/portfolio_web3
 python3 -m http.server 8000
 # open http://localhost:8000
 ```
@@ -290,65 +258,51 @@ python3 -m http.server 8000
 
 ## 9. Deployment
 
-The site is live on **two** hosts, both auto-updating from the GitHub repo
-`MBilalSIddiqi/portfolio` (`main` branch):
+Live on **two** hosts, both auto-updating from `MBilalSIddiqi/portfolio` (`main` branch):
 
 - **Netlify (primary)** — https://mbilalsiddiqi-portfolio.netlify.app/
-  - Site name `mbilalsiddiqi-portfolio`, team "Muhammad Bilal's Inc" (`bilalseo009`, Free plan).
+  - Site `mbilalsiddiqi-portfolio`, team "Muhammad Bilal's Inc" (`bilalseo009`, Free plan).
   - **Continuous deployment** via the Netlify GitHub App: push to `main` → production deploy;
-    open a PR → unique deploy-preview URL; branch deploys at `<branch>--mbilalsiddiqi-portfolio.netlify.app`.
-  - Config in `netlify.toml`: `publish = "."`, no build command (static site).
+    PRs → deploy-preview URLs; branch deploys at `<branch>--mbilalsiddiqi-portfolio.netlify.app`.
+  - `netlify.toml`: `publish = "."`, no build command (static).
   - Admin: https://app.netlify.com/projects/mbilalsiddiqi-portfolio
-- **GitHub Pages (mirror)** — https://mbilalsiddiqi.github.io/portfolio/
-  - Served from `main` branch root; rebuilds automatically on push.
+- **GitHub Pages (mirror)** — https://mbilalsiddiqi.github.io/portfolio/ — served from `main` root.
 
-A single `git push origin main` therefore updates both live sites.
+A single `git push origin main` updates both live sites.
 
 ---
 
-## 10. Not Yet Done (see `TODO.md`)
+## 10. Not Yet Done (see `TODO.md` / `improvements.md`)
 
-- **Remaining real assets:** profile photo and certificate screenshots — still picsum.photos
-  placeholders. (All 15 projects now use real mockups in `assets/images/`.)
+- **Two open UX-audit items:** the form-error `alert()` (`js/script.js:628`) is still present
+  (redundant with the inline `role="alert"` errors), and the contact **Location still reads
+  "Planet Earth"** (should be a real city/country).
 - **Testing:** Lighthouse audit (target 90+) and cross-browser testing not yet run.
-  *(Deployment itself is done — see §9.)*
-- **Repo files:** `assets/pdfs/` from `file system.txt` does not exist yet.
-- **Email notifications for the form:** the contact form now posts to **Netlify Forms** (submissions
-  collect in the Netlify dashboard → Forms tab). Still to do: add an email notification under
-  Forms → Form notifications so submissions land in an inbox automatically.
+- **Security headers** (`netlify.toml`): CSP + security headers + CDN SRI from `improvements.md` not
+  yet added.
+- **Email notifications for the form:** submissions collect in the Netlify Forms dashboard; still to
+  add an email notification under Forms → Form notifications.
 
 ---
 
 ## 11. Phase 6 — UI/UX Global Polish
 
-A site-wide pass to lift the visual quality without changing layout/content. All six items shipped;
-each respects `prefers-reduced-motion`.
+A site-wide visual pass (layout/content unchanged). All six items shipped; each respects
+`prefers-reduced-motion`.
 
-1. **Typographic scale & rhythm** — spacing scale (`--space-1`…`6`) and type scale
-   (`--fs-sm/base/lg`) tokens; h1/h2/h3 tightened (`line-height: 1.15`, `letter-spacing: -0.02em`,
-   h3 `-0.01em`) with `text-wrap: balance`; `.section__lead` gets `text-wrap: pretty`.
-2. **Color & depth refinement** — a fixed hero **radial glow** painted on `<body>`
-   (`radial-gradient(900px circle at 50% -5%, rgba(42,111,219,0.1), transparent 60%)`,
-   `background-attachment: fixed`); a two-tier border system (`--border` → `--border-hover` on
-   hover); and an inner top highlight (`--edge-light`) on raised cards (`.demo-card`, `.price-card`,
-   `.sp-card`, `.card`, `.info-table`), which on hover combine `var(--shadow), var(--edge-light)`.
-3. **Motion & micro-interactions** — scroll-reveal via `IntersectionObserver`
-   (`initScrollReveal()`, threshold `0.12`, `rootMargin: 0px 0px -40px 0px`): elements fade + rise
-   24px into place once, then unobserve. A springy `--ease` token drives transitions. A **CTA sheen
-   sweep** — a diagonal light gradient slides across `.btn--blue` / `.btn--github` on hover via
-   `::after`.
-4. **Nav & header polish** — the mobile hamburger animates into an **X** when expanded
-   (`aria-expanded="true"`); the header gains a `.is-scrolled` background/shadow once `scrollY > 8`
-   (passive scroll listener in `buildNav`); the mobile dropdown is gated with
-   `visibility: hidden; pointer-events: none` until `.open`, so its links aren't focusable while
-   closed.
-5. **Footer restructure** — old static footer replaced by a JS-injected 3-part footer
-   (`buildFooter()`): brand + tagline · quick nav · circular social icons, with a copyright bar.
-   See §4 → Footer.
-6. **Focus & form feel** — form inputs/textareas get a soft focus ring
-   (`box-shadow: 0 0 0 3px rgba(42,111,219,0.15)` + blue border) instead of a hard border jump,
-   plus a `--border-hover` hover state.
-
-> **Note:** with the footer now JS-injected (joining the nav), **both** the header and footer
-> require JavaScript to render. This is an intentional DRY trade-off — one definition instead of
-> four copies per region.
+1. **Typographic scale & rhythm** — spacing + type-scale tokens; h1/h2/h3 tightened
+   (`line-height: 1.15`, negative `letter-spacing`) with `text-wrap: balance`; `.section__lead`
+   gets `text-wrap: pretty`.
+2. **Color & depth** — fixed hero **radial glow** on `<body>`; two-tier borders
+   (`--border` → `--border-hover`); inner top highlight (`--edge-light`) on raised cards.
+3. **Motion & micro-interactions** — scroll-reveal via `IntersectionObserver` (`initScrollReveal()`,
+   fade + rise 24px, then unobserve); springy `--ease`; **CTA sheen sweep** on
+   `.btn--blue`/`.btn--github` via `::after`.
+4. **Nav & header polish** — hamburger animates into an **X** (`aria-expanded`); header gains
+   `.is-scrolled` shadow past `scrollY > 8`; mobile dropdown gated with `visibility: hidden;
+   pointer-events: none` until `.open` so links aren't focusable while closed.
+5. **Footer restructure** — JS-injected 3-part footer (`buildFooter()`): brand + tagline · quick nav
+   · circular social icons + copyright bar. See §4.
+6. **Focus & form feel** — inputs/textareas get a soft focus ring
+   (`box-shadow: 0 0 0 3px rgba(42,111,219,0.15)` + blue border) instead of a hard border jump, plus
+   a `--border-hover` hover state.

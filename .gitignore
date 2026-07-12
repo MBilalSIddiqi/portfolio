@@ -18,12 +18,16 @@ Thumbs.db
 # Local agent/skill tooling (not part of the site)
 .agents/
 skills-lock.json
+.claude/
 
 # Secrets — never commit API keys/tokens (e.g. TinyPNG/Tinify key)
 .env
 .env.*
 *.key
 secrets*
+
+# Personal info dump — kept local only, never published
+details.txt
 
 # Logo concept candidates + comparison page — kept locally for reference,
 # but only assets/logo.svg (the chosen "Terminal" logo) ships with the site.
