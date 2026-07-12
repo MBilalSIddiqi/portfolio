@@ -538,7 +538,7 @@
         </div>`;
       card.addEventListener("click", () =>
         openModal(`
-          <img class="modal__img" src="${c.img}" alt="${c.title} certificate">
+          <img class="modal__img modal__img--cert" src="${c.img}" alt="${c.title} certificate">
           <div class="modal__content">
             <h2>${c.title}</h2>
             <p class="card__meta">${c.issuer} &middot; ${c.date}</p>

@@ -872,6 +872,16 @@ ul { margin: 0; padding: 0; list-style: none; }
 .modal__close:hover { background: var(--blue); }
 
 .modal__img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+/* Certificate view: show the whole document, never crop. Fits within the
+   viewport while preserving aspect ratio; text summary scrolls below. */
+.modal__img--cert {
+  aspect-ratio: auto;
+  object-fit: contain;
+  height: auto;
+  max-height: 82vh;
+  display: block;
+}
 .modal__content { padding: 1.4rem 1.6rem 1.8rem; }
 
 /* Carousel (multi-image project modals) */
