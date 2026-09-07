@@ -302,6 +302,14 @@
       detail:
         "A hands-on track applying Python to AI development — working with data, libraries, and the building blocks of modern AI-powered tools.",
     },
+    {
+      title: "SQL",
+      issuer: "Mimo",
+      date: "August 2026",
+      img: "assets/images/mimo-sql.jpg",
+      detail:
+        "Completed Mimo's SQL track — covering the core concepts needed to create tables, write queries over one or multiple tables, and manage a basic relational database.",
+    },
   ];
 
   const SIDE_PROJECTS = [
